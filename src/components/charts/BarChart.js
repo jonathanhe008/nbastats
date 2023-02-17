@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Box } from '@mui/material';
 import { Bar } from 'react-chartjs-2';
 import { fetchBarData } from '../../api/api';
 import { Chart as ChartJS, registerables } from 'chart.js';
@@ -22,7 +21,6 @@ const BarChart = ({ option, stat }) => {
   }
 
   return (
-    <Box sx={{ width: '50%' }}>
       <Bar
         data={{
           labels: chartData.labels,
@@ -60,7 +58,6 @@ const BarChart = ({ option, stat }) => {
           },
         }}
       />
-    </Box>
   );
 };
 

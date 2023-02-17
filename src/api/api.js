@@ -135,7 +135,6 @@ export async function fetchSeasonAverage(players) {
     return totals_map;
 }
 
-// const fetchPlayerMemoized = memoize(fetchPlayer);
 const fetchPlayerStatsMemoized = memoize(fetchPlayerStats);
 const fetchSeasonAverageMemoized = memoize(fetchSeasonAverage);
 
@@ -185,7 +184,6 @@ export const fetchDoughnutData = memoize(async function(selection, stat) {
 
 export const fetchBarData = memoize(async function(selection, stat) {
     try {
-    //   const player = await fetchPlayerMemoized(selection.apiId);
       const player = selection.info;
       const maps = await fetchPlayerStatsMemoized(player);
       const stat_map = maps.stat;
@@ -205,7 +203,6 @@ export const fetchBarData = memoize(async function(selection, stat) {
 
 export const fetchLineData = memoize(async function(selection, stat) {
     try {
-    //   const player = await fetchPlayerMemoized(selection.apiId);
       const player = selection.info;
       const maps = await fetchPlayerStatsMemoized(player);
       const trend_map = maps.trend;

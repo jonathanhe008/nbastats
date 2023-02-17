@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel } from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, Container, styled } from '@mui/material';
 import { fetchTotalsData } from '../../api/api';
 
 function sortObject(obj, order) {
@@ -13,6 +13,10 @@ function sortObject(obj, order) {
     return Object.fromEntries(sortedEntries);
 }
 
+const StyledTableCell = styled(TableCell)({
+  padding: '.2rem .2rem'
+})
+
 function createTableRows(totalsMap, players, order, orderBy) {
     const rows = [];
     const playerDict = players.reduce((acc, obj) => {
@@ -25,18 +29,18 @@ function createTableRows(totalsMap, players, order, orderBy) {
       const player = playerDict[playerId];
       rows.push(
         <TableRow key={playerId}>
-          <TableCell>
+          <StyledTableCell sx={{ display: 'flex', alignItems: 'center' }}>
             <img src={`https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${player['personId']}.png`} 
-            alt={`${player['firstName']} ${player['lastName']}`} width="50px" />
+            alt={`${player['firstName']} ${player['lastName']}`} style={{ marginRight: "0.5rem", width: "5em", height: "5em", objectFit: "contain" }} />
             {`${player['firstName']} ${player['lastName']}`}
-          </TableCell>
-          <TableCell>{totalsMap['pts'][playerId]}</TableCell>
-          <TableCell>{totalsMap['ast'][playerId]}</TableCell>
-          <TableCell>{totalsMap['reb'][playerId]}</TableCell>
-          <TableCell>{totalsMap['stl'][playerId]}</TableCell>
-          <TableCell>{totalsMap['blk'][playerId]}</TableCell>
-          <TableCell>{totalsMap['turnover'][playerId]}</TableCell>
-          <TableCell>{new Intl.NumberFormat().format(totalsMap['min'][playerId])}</TableCell>
+          </StyledTableCell>
+          <StyledTableCell>{totalsMap['pts'][playerId]}</StyledTableCell>
+          <StyledTableCell>{totalsMap['ast'][playerId]}</StyledTableCell>
+          <StyledTableCell>{totalsMap['reb'][playerId]}</StyledTableCell>
+          <StyledTableCell>{totalsMap['stl'][playerId]}</StyledTableCell>
+          <StyledTableCell>{totalsMap['blk'][playerId]}</StyledTableCell>
+          <StyledTableCell>{totalsMap['turnover'][playerId]}</StyledTableCell>
+          <StyledTableCell>{new Intl.NumberFormat().format(totalsMap['min'][playerId])}</StyledTableCell>
         </TableRow>
       );
     }
@@ -69,9 +73,9 @@ class TeamStatsTable extends Component {
   
     handleSortRequest(cellId) {
       const { orderBy, order } = this.state;
-      const isAsc = orderBy === cellId && order === "asc";
+      const isDesc = orderBy === cellId && order === "desc";
       this.setState({
-        order: isAsc ? "desc" : "asc",
+        order: isDesc ? "asc" : "desc",
         orderBy: cellId,
       });
     }
@@ -84,73 +88,74 @@ class TeamStatsTable extends Component {
       }
   
       return (
+        <Container fixed>
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
           <TableRow>
-          <TableCell>Player</TableCell>
-          <TableCell>
+          <StyledTableCell><b>Player</b></StyledTableCell>
+          <StyledTableCell>
             <TableSortLabel
               active={orderBy === "pts"}
-              direction={orderBy === "pts" ? order : "asc"}
+              direction={orderBy === "pts" ? order : "desc"}
               onClick={() => this.handleSortRequest("pts")}
             >
-              Pts
+              <b>Pts</b>
             </TableSortLabel>
-          </TableCell>
-          <TableCell>
+          </StyledTableCell>
+          <StyledTableCell>
             <TableSortLabel
               active={orderBy === "ast"}
-              direction={orderBy === "ast" ? order : "asc"}
+              direction={orderBy === "ast" ? order : "desc"}
               onClick={() => this.handleSortRequest("ast")}
             >
-              Ast
+              <b>Ast</b>
             </TableSortLabel>
-          </TableCell>
-          <TableCell>
+          </StyledTableCell>
+          <StyledTableCell>
             <TableSortLabel
               active={orderBy === "reb"}
-              direction={orderBy === "reb" ? order : "asc"}
+              direction={orderBy === "reb" ? order : "desc"}
               onClick={() => this.handleSortRequest("reb")}
             >
-              Reb
+              <b>Reb</b>
             </TableSortLabel>
-          </TableCell>
-          <TableCell>
+          </StyledTableCell>
+          <StyledTableCell>
             <TableSortLabel
               active={orderBy === "stl"}
-              direction={orderBy === "stl" ? order : "asc"}
+              direction={orderBy === "stl" ? order : "desc"}
               onClick={() => this.handleSortRequest("stl")}
             >
-              Stl
+              <b>Stl</b>
             </TableSortLabel>
-          </TableCell>
-          <TableCell>
+          </StyledTableCell>
+          <StyledTableCell>
             <TableSortLabel
               active={orderBy === "blk"}
-              direction={orderBy === "blk" ? order : "asc"}
+              direction={orderBy === "blk" ? order : "desc"}
               onClick={() => this.handleSortRequest("blk")}
             >
-              Blk
+              <b>Blk</b>
             </TableSortLabel>
-          </TableCell>
-          <TableCell>
+          </StyledTableCell>
+          <StyledTableCell>
             <TableSortLabel
               active={orderBy === "turnover"}
-              direction={orderBy === "turnover" ? order : "asc"}
+              direction={orderBy === "turnover" ? order : "desc"}
               onClick={() => this.handleSortRequest("turnover")}
             >
-              Tov
+              <b>Tov</b>
             </TableSortLabel>
-          </TableCell>
-          <TableCell>
+          </StyledTableCell>
+          <StyledTableCell>
             <TableSortLabel
               active={orderBy === "min"}
-              direction={orderBy === "min" ? order : "asc"}
+              direction={orderBy === "min" ? order : "desc"}
               onClick={() => this.handleSortRequest("min")}
             >
-              Min
+              <b>Min</b>
             </TableSortLabel>
-          </TableCell>
+          </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -158,6 +163,7 @@ class TeamStatsTable extends Component {
         </TableBody>
 
         </Table>
+        </Container>
       );
     }
   }

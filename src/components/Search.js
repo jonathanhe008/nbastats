@@ -61,7 +61,9 @@ function SearchComponent({ onSelect }) {
         options={[...player_content, ...team_content]}
         groupBy={(option) => option.category}
         getOptionLabel={(option) => option.title}
-        sx={{ width: 300 }}
+        sx={{ width: 250 }}
+        size={"small"} 
+        fullWidth
         renderInput={(params) => <TextField {...params} label="Search a player or team" />}
         />
     );

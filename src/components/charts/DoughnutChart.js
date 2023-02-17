@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Box } from '@mui/material';
 import { Doughnut } from 'react-chartjs-2';
 import { fetchDoughnutData } from '../../api/api';
 import { Chart as ChartJS, registerables } from 'chart.js';
@@ -22,7 +21,6 @@ const DoughnutChart = ({ option, stat }) => {
   }
 
   return (
-    <Box sx={{ width: '50%' }}>
       <Doughnut
         data={{
           labels: chartData.labels,
@@ -50,7 +48,6 @@ const DoughnutChart = ({ option, stat }) => {
           }
         }}
       />
-    </Box>
   );
 };
 

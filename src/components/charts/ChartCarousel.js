@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Pagination } from '@mui/material';
+import { Box, Pagination, Stack } from '@mui/material';
 import LineChart from './LineChart';
 import BarChart from './BarChart';
 import DoughnutChart from './DoughnutChart';
@@ -14,12 +14,14 @@ function ChartCarousel(props) {
     
     return (
         props.selectedOption.category === 'Player' ? 
-        <Box display="flex" flexDirection="column" alignItems="center">
+        <Box sx={{ width: '50%', height: '50%', margin: '0 auto' }} display="flex" flexDirection="column" alignItems="center">
             {activeChart === 1 ? <BarChart option={props.selectedOption} stat={props.selectedStat}></BarChart> : 
             <LineChart option={props.selectedOption} stat={props.selectedStat}></LineChart>}
+            <Stack alignItems="center">
             <Pagination count={2} page={activeChart} onChange={handleChange} />
+            </Stack>
         </Box> : 
-        <Box display="flex" flexDirection="column" alignItems="center">
+        <Box sx={{ width: '50%', height: '50%', margin: '0 auto' }} display="flex" flexDirection="column" alignItems="center">
             <DoughnutChart option={props.selectedOption} stat={props.selectedStat}></DoughnutChart>
         </Box>
     );

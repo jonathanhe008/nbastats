@@ -36,7 +36,10 @@ function StatTabs({ options, onChange, selectedOption }) {
             },
           }
         },
-      }
+      },
+      typography: {
+        fontFamily: 'Quicksand'
+      },
     });
   return (
     <Box sx={{ width: '100%' }}>
@@ -57,4 +60,3 @@ function StatTabs({ options, onChange, selectedOption }) {
 }
 
 export default StatTabs;
-//{`rgb(${teams[selectedOption.info.team.id].primary_color})`}

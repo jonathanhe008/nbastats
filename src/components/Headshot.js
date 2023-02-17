@@ -18,7 +18,7 @@ class Headshot extends Component {
         }
     }
     render() {
-        return <img alt="Headshot" src={this.state.src} width="200px"/>;
+        return <img alt="Headshot" src={this.state.src} height="100px"/>;
     }
     
 }

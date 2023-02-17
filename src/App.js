@@ -6,6 +6,9 @@ import {
   Container,
   Stack,
   Typography,
+  createTheme,
+  ThemeProvider,
+  CssBaseline
 } from '@mui/material';
 import { Helmet } from 'react-helmet';
 import Headshot from './components/Headshot';
@@ -34,6 +37,11 @@ function App() {
   const backgroundColor = selectedOption.category === "Player" ? `rgba(${teams[selectedOption.info.team.id].secondary_color}, 0.3)` 
   : `rgba(${teams[selectedOption.apiId].secondary_color}, 0.3)`;
 
+  const theme = createTheme({
+    typography: {
+      fontFamily: 'Quicksand',
+    },
+  });
   return (
     <div className="App">
       <Helmet>
@@ -42,7 +50,9 @@ function App() {
       <header>
             <a href="https://jonathanhe008.github.io"><img src={logo} alt="Logo"></img></a>
       </header>
-      <Grid container spacing={3} sx={{ flexGrow: 1 }} justifyContent="space-between" alignItems="center" marginBottom="10vh">
+      <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Grid container spacing={3} sx={{ flexGrow: 1 }} justifyContent="space-between" alignItems="center" marginBottom="1vh">
         <Grid item xs={12} sm={3} textAlign="left">
         </Grid>
         <Grid item xs={12} sm={6}  textAlign="center">
@@ -63,13 +73,16 @@ function App() {
             alignItems="center"
             spacing={1}>
       <StatTabs options={STAT_LIST} onChange={handleStatChange} selectedOption={selectedOption}/>
+      <br></br>
       <Container maxWidth="sm">
         <Headshot option={selectedOption}></Headshot>
       </Container>
       </Stack>
       <ChartCarousel selectedOption={selectedOption} selectedStat={selectedStat}></ChartCarousel>
+      <br></br>
       {selectedOption.category === "Player" ? <GameTable option={selectedOption}></GameTable> : 
       <TeamStatsTable option={selectedOption}></TeamStatsTable>}
+      </ThemeProvider>
     </div>
   );
 }
