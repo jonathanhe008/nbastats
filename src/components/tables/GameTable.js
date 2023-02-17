@@ -170,7 +170,7 @@ const GameTable = ({ option }) => {
                   <img
                     src={teams[d.game.home_team_id].logo}
                     alt="home team logo"
-                    style={{ marginRight: "0.5rem", marginLeft: "0.1rem", width: "2em", height: "2em", objectFit: "contain" }}
+                    style={{ marginRight: "0.5rem", marginLeft: "0.3rem", width: "2em", height: "2em", objectFit: "contain" }}
                   />
                   {teams[d.game.home_team_id].name}
                 </StyledTableCell>

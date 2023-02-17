@@ -18,6 +18,7 @@ import SearchComponent from './components/Search';
 import TeamStatsTable from './components/tables/TeamStatsTable';
 import GameTable from './components/tables/GameTable';
 import teams from './assets/teams.json'
+import Footer from './components/Footer'
 import { STAT_LIST, GOAT } from './assets/constants';
 
 function App() {
@@ -82,6 +83,7 @@ function App() {
       <br></br>
       {selectedOption.category === "Player" ? <GameTable option={selectedOption}></GameTable> : 
       <TeamStatsTable option={selectedOption}></TeamStatsTable>}
+      <Footer></Footer>
       </ThemeProvider>
     </div>
   );
