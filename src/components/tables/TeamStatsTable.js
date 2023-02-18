@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, Container, styled } from '@mui/material';
-import { fetchTotalsData } from '../../api/api';
+import { Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, Container, styled, Typography } from '@mui/material';
+import { fetchTotalsData, fetchPlayer } from '../../api/api';
+import players from '../../assets/players.json'
 
 function sortObject(obj, order) {
     const sortedEntries = Object.entries(obj).sort((a, b) => {
@@ -17,35 +18,14 @@ const StyledTableCell = styled(TableCell)({
   padding: '.2rem .2rem'
 })
 
-function createTableRows(totalsMap, players, order, orderBy) {
-    const rows = [];
-    const playerDict = players.reduce((acc, obj) => {
-        acc[`${obj['firstName']} ${obj['lastName']}`] = obj;
-        return acc;
-    }, {});
-    
-    const iter = sortObject(totalsMap[orderBy], order);
-    for (let playerId in iter) {
-      const player = playerDict[playerId];
-      rows.push(
-        <TableRow key={playerId}>
-          <StyledTableCell sx={{ display: 'flex', alignItems: 'center' }}>
-            <img src={`https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${player['personId']}.png`} 
-            alt={`${player['firstName']} ${player['lastName']}`} style={{ marginRight: "0.5rem", width: "5em", height: "5em", objectFit: "contain" }} />
-            {`${player['firstName']} ${player['lastName']}`}
-          </StyledTableCell>
-          <StyledTableCell>{totalsMap['pts'][playerId]}</StyledTableCell>
-          <StyledTableCell>{totalsMap['ast'][playerId]}</StyledTableCell>
-          <StyledTableCell>{totalsMap['reb'][playerId]}</StyledTableCell>
-          <StyledTableCell>{totalsMap['stl'][playerId]}</StyledTableCell>
-          <StyledTableCell>{totalsMap['blk'][playerId]}</StyledTableCell>
-          <StyledTableCell>{totalsMap['turnover'][playerId]}</StyledTableCell>
-          <StyledTableCell>{new Intl.NumberFormat().format(totalsMap['min'][playerId])}</StyledTableCell>
-        </TableRow>
-      );
-    }
-    return rows;
-}
+const player_content = players['league']['standard'].map(function(player) {
+  return {
+    title: `${player.firstName} ${player.lastName}`,
+    id: player.personId,
+    apiId: player.apiId,
+    category: 'Player'
+  }
+});
 
 class TeamStatsTable extends Component {
     constructor(props) {
@@ -79,6 +59,53 @@ class TeamStatsTable extends Component {
         orderBy: cellId,
       });
     }
+
+    async getPlayer(player_name) {
+      const player_obj = player_content.find(obj => obj.title === player_name);
+      const player = await fetchPlayer(player_obj.apiId);
+      this.props.onSelect({
+          ...player_obj,
+          info: player,
+      });
+    }
+
+    createTableRows(totalsMap, players, order, orderBy) {
+      const rows = [];
+      const playerDict = players.reduce((acc, obj) => {
+          acc[`${obj['firstName']} ${obj['lastName']}`] = obj;
+          return acc;
+      }, {});
+      
+      const iter = sortObject(totalsMap[orderBy], order);
+      for (let playerId in iter) {
+        const player = playerDict[playerId];
+        rows.push(
+          <TableRow key={playerId}>
+            <StyledTableCell sx={{ display: 'flex', alignItems: 'center' }}>
+              <img src={`https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${player['personId']}.png`} 
+              alt={`${player['firstName']} ${player['lastName']}`} style={{ marginRight: "0.5rem", width: "5em", height: "5em", objectFit: "contain" }} />
+              <Typography
+                component="a"
+                href="#"
+                onClick={() => this.getPlayer(`${player['firstName']} ${player['lastName']}`)}
+                variant="highlight"
+                sx={{ marginRight: "0.5rem" }}
+              >
+                {`${player['firstName']} ${player['lastName']}`}
+              </Typography>
+            </StyledTableCell>
+            <StyledTableCell>{totalsMap['pts'][playerId]}</StyledTableCell>
+            <StyledTableCell>{totalsMap['ast'][playerId]}</StyledTableCell>
+            <StyledTableCell>{totalsMap['reb'][playerId]}</StyledTableCell>
+            <StyledTableCell>{totalsMap['stl'][playerId]}</StyledTableCell>
+            <StyledTableCell>{totalsMap['blk'][playerId]}</StyledTableCell>
+            <StyledTableCell>{totalsMap['turnover'][playerId]}</StyledTableCell>
+            <StyledTableCell>{new Intl.NumberFormat().format(totalsMap['min'][playerId])}</StyledTableCell>
+          </TableRow>
+        );
+      }
+      return rows;
+  }
   
     render() {
       const { totalsData, orderBy, order, players } = this.state;
@@ -159,7 +186,7 @@ class TeamStatsTable extends Component {
           </TableRow>
         </TableHead>
         <TableBody>
-        {createTableRows(totalsData, players, order, orderBy)}
+        {this.createTableRows(totalsData, players, order, orderBy)}
         </TableBody>
 
         </Table>

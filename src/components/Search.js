@@ -56,7 +56,7 @@ function SearchComponent({ onSelect }) {
     return (
         <Autocomplete
         value={selectedOption}
-        disableClearable
+        
         onChange={handleSelect}
         options={[...player_content, ...team_content]}
         groupBy={(option) => option.category}

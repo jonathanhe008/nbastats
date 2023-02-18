@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, Container, styled } from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, Container, styled, Typography } from '@mui/material';
 import { fetchGameData } from '../../api/api';
 import teams from '../../assets/teams.json'
+import players from '../../assets/players.json'
 
 function stableSort(array, comparator, orderBy) {
     const stabilizedThis = array.map((el, index) => [el, index]);
@@ -46,7 +47,14 @@ const StyledTableCell = styled(TableCell)({
   padding: '.5rem .5rem',
 })
 
-const GameTable = ({ option }) => {
+const team_content = Object.entries(teams).map(([key, value]) => ({ 
+  title: value.name,
+  apiId: key,
+  id: value.id,
+  category: 'Team'
+}));
+
+const GameTable = ({ option, onSelect }) => {
     const [gameData, setGameData] = useState(null);
     
     useEffect(() => {
@@ -67,6 +75,20 @@ const GameTable = ({ option }) => {
     };
     
     const sortedData = gameData ? stableSort(gameData, getComparator(order, orderBy), orderBy) : [];
+
+    const getTeam = (team_name) => {
+
+      const team = team_content.find(obj => obj.title === team_name);
+      const player_team_dict = {};
+      players['league']['standard'].forEach(player => {
+          player_team_dict[player.teamId] = [ ...(player_team_dict[player.teamId] || []), player];
+      });
+      console.log("Player_team_dict => ", player_team_dict[team.id]);
+      onSelect({
+          ...team,
+          info: player_team_dict[team.id],
+      });
+    };
 
     if (!gameData) {
       return <div>Loading...</div>;
@@ -166,13 +188,29 @@ const GameTable = ({ option }) => {
                     alt="visitor team logo"
                     style={{ marginRight: "0.5rem", width: "2em", height: "2em", objectFit: "contain" }}
                   />
-                  {teams[d.game.visitor_team_id].name} @{" "}
+                  <Typography
+                  component="a"
+                  href="#"
+                  onClick={() => getTeam(teams[d.game.visitor_team_id].name)}
+                  variant="highlight"
+                  sx={{ marginRight: "0.5rem" }}
+                >
+                  {teams[d.game.visitor_team_id].name}
+                </Typography>
+                  {" @ "}
                   <img
                     src={teams[d.game.home_team_id].logo}
                     alt="home team logo"
                     style={{ marginRight: "0.5rem", marginLeft: "0.3rem", width: "2em", height: "2em", objectFit: "contain" }}
                   />
+                <Typography
+                  component="a"
+                  href="#"
+                  onClick={() => getTeam(teams[d.game.home_team_id].name)}
+                  variant="highlight"
+                >
                   {teams[d.game.home_team_id].name}
+                </Typography>
                 </StyledTableCell>
                 {isDnp(d) ? 
                 (<StyledTableCell colSpan={7} align="center">
