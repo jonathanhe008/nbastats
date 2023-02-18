@@ -1,9 +1,10 @@
 {
   "files": {
-    "main.css": "/nbastats/static/css/main.1bfd42f4.css",
-    "main.js": "/nbastats/static/js/main.c3a000d4.js",
+    "main.css": "/nbastats/static/css/main.3ae03541.css",
+    "main.js": "/nbastats/static/js/main.86e09acc.js",
     "static/js/787.c3dcaf5a.chunk.js": "/nbastats/static/js/787.c3dcaf5a.chunk.js",
     "static/media/logo-gray.png": "/nbastats/static/media/logo-gray.a889536c6fb27f5d8cc8.png",
+    "static/media/goat.png": "/nbastats/static/media/goat.c3370a86dcf885e9b069.png",
     "static/media/quicksand-all-500-normal.woff": "/nbastats/static/media/quicksand-all-500-normal.2d5758647fa98f7b15ee.woff",
     "static/media/quicksand-all-400-normal.woff": "/nbastats/static/media/quicksand-all-400-normal.3991594f0487f37c86d5.woff",
     "static/media/quicksand-all-700-normal.woff": "/nbastats/static/media/quicksand-all-700-normal.4ae9b08098baacb7ec48.woff",
@@ -21,12 +22,12 @@
     "static/media/quicksand-vietnamese-300-normal.woff2": "/nbastats/static/media/quicksand-vietnamese-300-normal.8c97d2d477027fad9cd6.woff2",
     "static/media/quicksand-vietnamese-700-normal.woff2": "/nbastats/static/media/quicksand-vietnamese-700-normal.f16da1766f969ce75e43.woff2",
     "index.html": "/nbastats/index.html",
-    "main.1bfd42f4.css.map": "/nbastats/static/css/main.1bfd42f4.css.map",
-    "main.c3a000d4.js.map": "/nbastats/static/js/main.c3a000d4.js.map",
+    "main.3ae03541.css.map": "/nbastats/static/css/main.3ae03541.css.map",
+    "main.86e09acc.js.map": "/nbastats/static/js/main.86e09acc.js.map",
     "787.c3dcaf5a.chunk.js.map": "/nbastats/static/js/787.c3dcaf5a.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.1bfd42f4.css",
-    "static/js/main.c3a000d4.js"
+    "static/css/main.3ae03541.css",
+    "static/js/main.86e09acc.js"
   ]
 }
