@@ -69,7 +69,7 @@ function SearchComponent({ onSelect }) {
             <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
               <img
                 loading="lazy"
-                width="20"
+                width="50"
                 src={option.category === "Player" ? `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${option.id}.png` : teams[option.apiId].logo}
                 alt=""
               />
