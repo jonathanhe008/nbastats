@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import Box from '@mui/material/Box';
 import players from '../assets/players.json';
 import teams from '../assets/teams.json';
 import { fetchPlayer } from '../api/api';
@@ -56,7 +57,7 @@ function SearchComponent({ onSelect }) {
     return (
         <Autocomplete
         value={selectedOption}
-        
+        disableClearable
         onChange={handleSelect}
         options={[...player_content, ...team_content]}
         groupBy={(option) => option.category}
@@ -64,6 +65,17 @@ function SearchComponent({ onSelect }) {
         sx={{ width: 250 }}
         size={"small"} 
         fullWidth
+        renderOption={(props, option) => (
+            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+              <img
+                loading="lazy"
+                width="20"
+                src={option.category === "Player" ? `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${option.id}.png` : teams[option.apiId].logo}
+                alt=""
+              />
+              {option.title}
+            </Box>
+          )}
         renderInput={(params) => <TextField {...params} label="Search a player or team" />}
         />
     );
