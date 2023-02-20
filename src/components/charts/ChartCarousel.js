@@ -15,8 +15,8 @@ function ChartCarousel(props) {
     return (
         props.selectedOption.category === 'Player' ? 
         <Box sx={{ width: '50%', height: '50%', margin: '0 auto' }} display="flex" flexDirection="column" alignItems="center">
-            {activeChart === 1 ? <BarChart option={props.selectedOption} stat={props.selectedStat}></BarChart> : 
-            <LineChart option={props.selectedOption} stat={props.selectedStat}></LineChart>}
+            {activeChart === 1 ? <LineChart option={props.selectedOption} stat={props.selectedStat}></LineChart> :
+            <BarChart option={props.selectedOption} stat={props.selectedStat}></BarChart>}
             <Stack alignItems="center">
             <Pagination count={2} page={activeChart} onChange={handleChange} />
             </Stack>

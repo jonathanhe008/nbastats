@@ -26,7 +26,7 @@ const DoughnutChart = ({ option, stat }) => {
           labels: chartData.labels,
           datasets: [
             {
-              label: `Total ${stat}`,
+              label: ` ${stat} per game`,
               data: chartData.data,
               backgroundColor: chartData.data.map((d, i) => `rgba(${teams[option.apiId].primary_color}, ${1 - i * (1/(chartData.data.length))})`),
               hoverOffset: 4

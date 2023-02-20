@@ -4,6 +4,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Box from '@mui/material/Box';
 import players from '../assets/players.json';
 import teams from '../assets/teams.json';
+import teamPlayers from '../assets/team_players.json';
 import { fetchPlayer } from '../api/api';
 
 const player_content = players['league']['standard'].map(function(player) {
@@ -35,15 +36,18 @@ function SearchComponent({ onSelect }) {
                     info: player,
                 });
             } else {
-                const player_team_dict = {};
+                let player_list = [];
+                const team_players = teamPlayers[teams[value.apiId].abbrev];
+                console.log("Official team list: ", team_players);
                 players['league']['standard'].forEach(player => {
-                    player_team_dict[player.teamId] = [ ...(player_team_dict[player.teamId] || []), player];
+                    if (team_players.includes(`${player['firstName']} ${player['lastName']}`))
+                    player_list.push(player);
                 });
-                console.log("Player_team_dict => ", player_team_dict[value.id]);
+                console.log("Team list found: ", player_list);
                 setSelectedOption(value);
                 onSelect({
                     ...value,
-                    info: player_team_dict[value.id],
+                    info: player_list,
                 });
             }
           

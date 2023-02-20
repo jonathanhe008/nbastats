@@ -124,9 +124,9 @@ export async function fetchSeasonAverage(players) {
             if (stat === "min") {
                 const parts = averages[stat].split(":");
                 const minutes = parseInt(parts[0])+ (parseInt(parts[1])/60);
-                totals_map[stat][`${player['firstName']} ${player['lastName']}`] = Math.ceil(minutes * averages['games_played']);
+                totals_map[stat][`${player['firstName']} ${player['lastName']}`] = minutes.toFixed(1);
             } else {
-                totals_map[stat][`${player['firstName']} ${player['lastName']}`] = Math.ceil(averages[stat] * averages['games_played']);
+                totals_map[stat][`${player['firstName']} ${player['lastName']}`] = averages[stat].toFixed(1);
             }
         });
     }

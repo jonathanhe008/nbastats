@@ -3,6 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, Conta
 import { fetchGameData } from '../../api/api';
 import teams from '../../assets/teams.json'
 import players from '../../assets/players.json'
+import teamPlayers from '../../assets/team_players.json'
 
 function stableSort(array, comparator, orderBy) {
     const stabilizedThis = array.map((el, index) => [el, index]);
@@ -79,14 +80,17 @@ const GameTable = ({ option, onSelect }) => {
     const getTeam = (team_name) => {
 
       const team = team_content.find(obj => obj.title === team_name);
-      const player_team_dict = {};
+      let player_list = [];
+      const team_players = teamPlayers[teams[team.apiId].abbrev];
+      console.log("Official team list: ", team_players);
       players['league']['standard'].forEach(player => {
-          player_team_dict[player.teamId] = [ ...(player_team_dict[player.teamId] || []), player];
+          if (team_players.includes(`${player['firstName']} ${player['lastName']}`))
+          player_list.push(player);
       });
-      console.log("Player_team_dict => ", player_team_dict[team.id]);
+      console.log("Team list found: ", player_list);
       onSelect({
           ...team,
-          info: player_team_dict[team.id],
+          info: player_list,
       });
     };
 
