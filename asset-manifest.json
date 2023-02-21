@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/nbastats/static/css/main.b5f72e13.css",
-    "main.js": "/nbastats/static/js/main.bcde9997.js",
+    "main.js": "/nbastats/static/js/main.77103b55.js",
     "static/js/787.c3dcaf5a.chunk.js": "/nbastats/static/js/787.c3dcaf5a.chunk.js",
     "static/media/goat_LAL.png": "/nbastats/static/media/goat_LAL.187eb08f20121857f9b4.png",
     "static/media/logo-gray.png": "/nbastats/static/media/logo-gray.a889536c6fb27f5d8cc8.png",
@@ -23,11 +23,11 @@
     "static/media/quicksand-vietnamese-700-normal.woff2": "/nbastats/static/media/quicksand-vietnamese-700-normal.f16da1766f969ce75e43.woff2",
     "index.html": "/nbastats/index.html",
     "main.b5f72e13.css.map": "/nbastats/static/css/main.b5f72e13.css.map",
-    "main.bcde9997.js.map": "/nbastats/static/js/main.bcde9997.js.map",
+    "main.77103b55.js.map": "/nbastats/static/js/main.77103b55.js.map",
     "787.c3dcaf5a.chunk.js.map": "/nbastats/static/js/787.c3dcaf5a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.b5f72e13.css",
-    "static/js/main.bcde9997.js"
+    "static/js/main.77103b55.js"
   ]
 }
