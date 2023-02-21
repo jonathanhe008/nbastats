@@ -11,13 +11,12 @@ a {
   text-decoration: none !important;
 }
 
-header {
-  display: flex;
-  align-items: center;
-  padding: 10px;
+#logo {
+  width: 30px;
+  height: auto;
 }
 
-header img {
-  width: 25px;
-  height: auto;
+.chartBox {
+  width: 99%;
+  min-height: 375px;
 }

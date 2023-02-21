@@ -1,12 +1,9 @@
-import logo from './assets/logo-gray.png';
-import goat from './assets/goat.png';
 import './App.css';
 import { useState } from 'react';
 import {
   Grid,
   Container,
   Stack,
-  Typography,
   createTheme,
   ThemeProvider,
   CssBaseline
@@ -20,6 +17,7 @@ import TeamStatsTable from './components/tables/TeamStatsTable';
 import GameTable from './components/tables/GameTable';
 import teams from './assets/teams.json'
 import Footer from './components/Footer'
+import Header from './components/Header'
 import { STAT_LIST, GOAT } from './assets/constants';
 
 function App() {
@@ -49,32 +47,14 @@ function App() {
       <Helmet>
         <style>{`body { background-color: ${backgroundColor}; }`}</style>
       </Helmet>
-      <header>
-            <a href="https://jonathanhe008.github.io"><img src={logo} alt="Logo"></img></a>
-      </header>
       <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Grid container spacing={3} sx={{ flexGrow: 1 }} justifyContent="space-between" alignItems="center" marginBottom="1vh">
+      <Grid container spacing={3} sx={{ flexGrow: 1 }} justifyContent="space-between" alignItems="center" marginBottom="1vh" marginTop="1vh">
         <Grid item xs={12} sm={3} textAlign="left">
         </Grid>
-        <Stack direction="column"
-            justifyContent="center"
-            alignItems="center"
-            spacing={1}>
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <img
-              src={goat}
-              alt="goat"
-              style={{ width: "2rem", height: "2rem", objectFit: "contain", marginRight: "0.5rem" }}
-            />
-            <Typography variant="h4" fontWeight="bold" style={{ fontFamily: 'Quicksand' }}>
-              GOAT?
-            </Typography>
-          </div>
-          <Typography variant="subtitle2" style={{ fontFamily: 'Quicksand' }}>
-            Visualizing the stats of the NBA
-          </Typography>
-        </Stack>
+        <Grid item xs={12} sm={6}>
+          <Header></Header>
+        </Grid>
         <Grid item xs={12} sm={3} textAlign="right" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <SearchComponent onSelect={handleSelect}></SearchComponent>
         </Grid>

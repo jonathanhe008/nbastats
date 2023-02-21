@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, Container, styled, Typography } from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, Container, styled, Typography, TableContainer } from '@mui/material';
 import { fetchTotalsData, fetchPlayer } from '../../api/api';
 import players from '../../assets/players.json'
 
@@ -116,6 +116,7 @@ class TeamStatsTable extends Component {
   
       return (
         <Container fixed>
+        <TableContainer sx={{ overflowX: "auto" }}>
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
           <TableRow>
@@ -190,6 +191,7 @@ class TeamStatsTable extends Component {
         </TableBody>
 
         </Table>
+        </TableContainer>
         </Container>
       );
     }

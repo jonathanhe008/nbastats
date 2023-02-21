@@ -33,6 +33,7 @@ const BarChart = ({ option, stat }) => {
           ],
         }}
         options={{
+          maintainAspectRatio : false,
           plugins: {
             title: {
               display: true,

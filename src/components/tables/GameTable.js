@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, Container, styled, Typography } from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, Container, styled, Typography, TableContainer } from '@mui/material';
 import { fetchGameData } from '../../api/api';
 import teams from '../../assets/teams.json'
 import players from '../../assets/players.json'
@@ -101,6 +101,7 @@ const GameTable = ({ option, onSelect }) => {
   
   return (
     <Container fixed>
+    <TableContainer sx={{ overflowX: "auto" }}>
       <Table sx={{ minWidth: 650 }}>
         <TableHead>
           <TableRow>
@@ -235,6 +236,7 @@ const GameTable = ({ option, onSelect }) => {
           })}
         </TableBody>
       </Table>
+      </TableContainer>
     </Container>
   );
 };

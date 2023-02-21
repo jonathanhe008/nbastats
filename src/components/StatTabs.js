@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Tabs, Tab, Box, createTheme, ThemeProvider } from '@mui/material';
+import { Tabs, Tab, Box, createTheme, ThemeProvider, useMediaQuery } from '@mui/material';
 import teams from '../assets/teams.json';
 
 function StatTabs({ options, onChange, selectedOption }) {
@@ -10,6 +10,7 @@ function StatTabs({ options, onChange, selectedOption }) {
     onChange(options[newValue]);
   };
   
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const theme = createTheme({
     components: {
         MuiTabs: {
@@ -42,14 +43,17 @@ function StatTabs({ options, onChange, selectedOption }) {
       },
     });
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center'  }}>
     <ThemeProvider theme={theme}>
-      <Tabs
+        <Tabs
         value={selectedTab}
         onChange={handleTabChange}
-        variant="fullWidth"
+        variant={isSmallScreen ? 'scrollable' : 'fullWidth'}
+        scrollButtons="auto"
         indicatorColor="secondary"
-        textColor="secondary">
+        textColor="secondary"
+        allowScrollButtonsMobile
+        sx={{ width: '100%' }}>
         {options.map((option, index) => (
           <Tab key={index} label={option} />
         ))}
