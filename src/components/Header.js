@@ -1,13 +1,14 @@
 import { Stack, Typography } from '@mui/material';
 
 function Header() {
+  const goat = require('../assets/goat_LAL.png');
   return (
     <Stack direction="column" justifyContent="center" alignItems="center" spacing={1}>
       <div style={{ display: "flex", alignItems: "center" }}>
         <img
-          src={require('../assets/goat_LAL.png')}
-          alt="goat"
-          style={{ width: "2.5rem", height: "2.5rem", objectFit: "contain", marginRight: "0.5rem" }}
+          src={goat}
+          alt=""
+          style={{ width: "2.5rem", height: "2.5rem", objectFit: "contain", marginRight: "0.25rem" }}
         />
         <Typography variant="h4" fontWeight="bold" fontFamily='Quicksand'>
           GOAT?
