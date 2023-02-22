@@ -155,6 +155,7 @@ export const fetchGameData = memoize(async function(selection) {
       const player = selection.info;
       const maps = await fetchPlayerStatsMemoized(player);
       const games = maps.data;
+      console.log("Game data => ", games)
       return games;
     } catch (error) {
       return {

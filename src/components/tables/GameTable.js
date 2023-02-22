@@ -75,6 +75,25 @@ const GameTable = ({ option, onSelect }) => {
         setOrderBy(cellId);
     };
     
+    const getGameResult = (game) => {
+      const isHome = game.home_team_id === option.info.team.id;
+      const homeScore = game.home_team_score;
+      const visitorScore = game.visitor_team_score;
+      const isFinal = game.status === "Final";
+      const result = isHome ? (homeScore > visitorScore ? "W" : "L") : (visitorScore > homeScore ? "W" : "L");
+      const color = result === "W" ? "green" : "red";
+
+      if (isFinal) {
+        return (
+          <span style={{ color: color }}>
+            {" "}
+            {result} {visitorScore} - {homeScore}
+          </span>
+        );
+      }
+      return `${visitorScore} - ${homeScore}`;
+    };
+
     const sortedData = gameData ? stableSort(gameData, getComparator(order, orderBy), orderBy) : [];
 
     const getTeam = (team_name) => {
@@ -213,9 +232,11 @@ const GameTable = ({ option, onSelect }) => {
                   href="#"
                   onClick={() => getTeam(teams[d.game.home_team_id].name)}
                   variant="highlight"
+                  sx={{ marginRight: "0.5rem" }}
                 >
                   {teams[d.game.home_team_id].name}
                 </Typography>
+                 {getGameResult(d.game)}
                 </StyledTableCell>
                 {isDnp(d) ? 
                 (<StyledTableCell colSpan={7} align="center">
