@@ -28,40 +28,41 @@ function SearchComponent({ onSelect }) {
 
     const handleSelect = async (event, value) => {
         try {
+          if (value !== null && value !== undefined) { // check for null or undefined value
             if (value.category === 'Player') {
-                const player = await fetchPlayer(value.apiId);
-                setSelectedOption(value);
-                onSelect({
-                    ...value,
-                    info: player,
-                });
+              const player = await fetchPlayer(value.apiId);
+              setSelectedOption(value);
+              onSelect({
+                ...value,
+                info: player,
+              });
             } else {
-                let player_list = [];
-                const team_players = teamPlayers[teams[value.apiId].abbrev];
-                console.log("Official team list: ", team_players);
-                players['league']['standard'].forEach(player => {
-                    if (team_players.includes(`${player['firstName']} ${player['lastName']}`))
-                    player_list.push(player);
-                });
-                console.log("Team list found: ", player_list);
-                setSelectedOption(value);
-                onSelect({
-                    ...value,
-                    info: player_list,
-                });
+              let player_list = [];
+              const team_players = teamPlayers[teams[value.apiId].abbrev];
+              console.log("Official team list: ", team_players);
+              players['league']['standard'].forEach(player => {
+                if (team_players.includes(`${player['firstName']} ${player['lastName']}`))
+                  player_list.push(player);
+              });
+              console.log("Team list found: ", player_list);
+              setSelectedOption(value);
+              onSelect({
+                ...value,
+                info: player_list,
+              });
             }
-          
+          }
         } catch (error) {
           console.error(error);
         }
       };
-      
+    
     
     
     return (
         <Autocomplete
         value={selectedOption}
-        disableClearable
+        clearOnEscape
         onChange={handleSelect}
         options={[...player_content, ...team_content]}
         groupBy={(option) => option.category}

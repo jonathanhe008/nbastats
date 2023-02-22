@@ -1,7 +1,8 @@
-import { Stack, Typography } from '@mui/material';
+import { Stack, Typography, Box } from '@mui/material';
 
 function Header() {
   const goat = require('../assets/goat_LAL.png');
+  const nba = require('../assets/nba.png');
   return (
     <Stack direction="column" justifyContent="center" alignItems="center" spacing={1}>
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -14,9 +15,20 @@ function Header() {
           GOAT?
         </Typography>
       </div>
-      <Typography variant="subtitle2" fontFamily='Quicksand'>
-        Visualizing the stats of the NBA
-      </Typography>
+      <Box display="flex" alignItems="center">
+        <Typography variant="subtitle2" fontFamily='Quicksand'>
+            Visualizing the stats of the
+        </Typography>
+        <img
+            src={nba}
+            alt=""
+            style={{ width: "1.5rem", height: "1.5rem", objectFit: "contain" }}
+        />
+        <Typography variant="subtitle2" fontFamily='Quicksand'>
+            NBA
+        </Typography>
+        </Box>
+
     </Stack>
   );
 }
