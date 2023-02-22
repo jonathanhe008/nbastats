@@ -207,36 +207,16 @@ const GameTable = ({ option, onSelect }) => {
                 {formatDate(d.game.date)}
                 </StyledTableCell>
                 <StyledTableCell sx={{ display: "flex", alignItems: "center" }}>
-                  <img
-                    src={teams[d.game.visitor_team_id].logo}
-                    alt="visitor team logo"
-                    style={{ marginRight: "0.5rem", width: "2em", height: "2em", objectFit: "contain" }}
-                  />
-                  <Typography
-                  component="a"
-                  href="#"
-                  onClick={() => getTeam(teams[d.game.visitor_team_id].name)}
-                  variant="highlight"
-                  sx={{ marginRight: "0.5rem" }}
-                >
-                  {teams[d.game.visitor_team_id].name}
-                </Typography>
+                  <img src={teams[d.game.visitor_team_id].logo} alt="visitor team logo" style={{ marginRight: "0.5rem", width: "2em", height: "2em", objectFit: "contain" }} />
+                  <Typography component="a" href="#" onClick={() => getTeam(teams[d.game.visitor_team_id].name)} variant="highlight" sx={{ marginRight: "0.5rem" }}>
+                    {teams[d.game.visitor_team_id].name}
+                  </Typography>
                   {" @ "}
-                  <img
-                    src={teams[d.game.home_team_id].logo}
-                    alt="home team logo"
-                    style={{ marginRight: "0.5rem", marginLeft: "0.3rem", width: "2em", height: "2em", objectFit: "contain" }}
-                  />
-                <Typography
-                  component="a"
-                  href="#"
-                  onClick={() => getTeam(teams[d.game.home_team_id].name)}
-                  variant="highlight"
-                  sx={{ marginRight: "0.5rem" }}
-                >
-                  {teams[d.game.home_team_id].name}
-                </Typography>
-                 {getGameResult(d.game)}
+                  <img src={teams[d.game.home_team_id].logo} alt="home team logo" style={{ marginRight: "0.5rem", marginLeft: "0.3rem", width: "2em", height: "2em", objectFit: "contain" }} />
+                  <Typography component="a" href="#" onClick={() => getTeam(teams[d.game.home_team_id].name)} variant="highlight" sx={{ marginRight: "0.5rem" }}>
+                    {teams[d.game.home_team_id].name}
+                  </Typography>
+                  <div style={{ marginLeft: "auto", marginRight: "1rem" }}>{getGameResult(d.game)}</div>
                 </StyledTableCell>
                 {isDnp(d) ? 
                 (<StyledTableCell colSpan={7} align="center">
