@@ -85,14 +85,46 @@ const GameTable = ({ option, onSelect }) => {
 
       if (isFinal) {
         return (
-          <span style={{ color: color }}>
+          <span style={{ color: color, fontSize: "18px"  }}>
             {" "}
-            {result} {visitorScore} - {homeScore}
+            {result} {isHome ? `${homeScore} - ${visitorScore}` : `${visitorScore} - ${homeScore}`}
           </span>
         );
       }
       return `${visitorScore} - ${homeScore}`;
     };
+
+    const getGame = (game) => {
+      const homeTeam = teams[game.home_team_id];
+      const visitorTeam = teams[game.visitor_team_id];
+      const homeLogo = <img src={homeTeam.logo} alt="home team logo" style={{ marginRight: "0.5rem", marginLeft: "0.5rem", width: "2em", height: "2em", objectFit: "contain" }} />;
+      const visitorLogo = <img src={visitorTeam.logo} alt="visitor team logo" style={{ marginRight: "0.5rem", marginLeft: "0.5rem", width: "2em", height: "2em", objectFit: "contain" }} />;
+      const homeName = <Typography component="a" href="#" onClick={() => getTeam(homeTeam.name)} variant="highlight" sx={{ marginRight: "0.5rem" }}>{homeTeam.name}</Typography>;
+      const visitorName = <Typography component="a" href="#" onClick={() => getTeam(visitorTeam.name)} variant="highlight" sx={{ marginRight: "0.5rem" }}>{visitorTeam.name}</Typography>;
+      const separator = " @ ";
+    
+      if (game.home_team_id === option.info.team.id) {
+        return (
+          <>
+            {homeLogo}
+            {homeName}
+            {" vs "} 
+            {visitorLogo}
+            {visitorName}
+          </>
+        );
+      }
+      
+      return (
+        <>
+          {visitorLogo}
+          {visitorName}
+          {separator}
+          {homeLogo}
+          {homeName}
+        </>
+      );
+    }
 
     const sortedData = gameData ? stableSort(gameData, getComparator(order, orderBy), orderBy) : [];
 
@@ -207,15 +239,7 @@ const GameTable = ({ option, onSelect }) => {
                 {formatDate(d.game.date)}
                 </StyledTableCell>
                 <StyledTableCell sx={{ display: "flex", alignItems: "center" }}>
-                  <img src={teams[d.game.visitor_team_id].logo} alt="visitor team logo" style={{ marginRight: "0.5rem", width: "2em", height: "2em", objectFit: "contain" }} />
-                  <Typography component="a" href="#" onClick={() => getTeam(teams[d.game.visitor_team_id].name)} variant="highlight" sx={{ marginRight: "0.5rem" }}>
-                    {teams[d.game.visitor_team_id].name}
-                  </Typography>
-                  {" @ "}
-                  <img src={teams[d.game.home_team_id].logo} alt="home team logo" style={{ marginRight: "0.5rem", marginLeft: "0.3rem", width: "2em", height: "2em", objectFit: "contain" }} />
-                  <Typography component="a" href="#" onClick={() => getTeam(teams[d.game.home_team_id].name)} variant="highlight" sx={{ marginRight: "0.5rem" }}>
-                    {teams[d.game.home_team_id].name}
-                  </Typography>
+                  {getGame(d.game)}
                   <div style={{ marginLeft: "auto", marginRight: "1rem" }}>{getGameResult(d.game)}</div>
                 </StyledTableCell>
                 {isDnp(d) ? 
