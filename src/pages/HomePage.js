@@ -40,7 +40,7 @@ function HomePage() {
                 sx={{marginTop: '2rem'}}>
             <Header sx={{ marginBottom: '2rem' }} />
             <Box display="flex" alignItems="center" textAlign="center">
-                <Typography variant="h4" fontFamily='Quicksand'>
+                <Typography variant="subtitle1" fontFamily='Quicksand'>
                     Is your favorite player the GOAT?
                 </Typography>
             </Box>
