@@ -6,11 +6,13 @@ function Header() {
   return (
     <Stack direction="column" justifyContent="center" alignItems="center" spacing={1}>
       <div style={{ display: "flex", alignItems: "center" }}>
+      <a href="/nbastats">
         <img
           src={goat}
           alt=""
           style={{ width: "2.5rem", height: "2.5rem", objectFit: "contain", marginRight: "0.25rem" }}
         />
+        </a>
         <Typography variant="h4" fontWeight="bold" fontFamily='Quicksand'>
           GOAT?
         </Typography>

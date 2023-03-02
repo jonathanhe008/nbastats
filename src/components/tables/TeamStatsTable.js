@@ -86,8 +86,8 @@ class TeamStatsTable extends Component {
               alt={`${player['firstName']} ${player['lastName']}`} style={{ marginRight: "0.5rem", width: "5em", height: "5em", objectFit: "contain" }} />
               <Typography
                 component="a"
-                href="#"
-                onClick={() => this.getPlayer(`${player['firstName']} ${player['lastName']}`)}
+                href="player"
+                onClick={(e) => { e.preventDefault(); this.getPlayer(`${player['firstName']} ${player['lastName']}`) }}
                 variant="highlight"
                 sx={{ marginRight: "0.5rem" }}
               >

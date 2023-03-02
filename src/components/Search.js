@@ -23,12 +23,12 @@ const team_content = Object.entries(teams).map(([key, value]) => ({
     category: 'Team'
 }));
 
-function SearchComponent({ onSelect }) {
+function SearchComponent({ onSelect, width }) {
     const [selectedOption, setSelectedOption] = useState(null);
 
     const handleSelect = async (event, value) => {
         try {
-          if (value !== null && value !== undefined) { // check for null or undefined value
+          if (value !== null && value !== undefined) {
             if (value.category === 'Player') {
               const player = await fetchPlayer(value.apiId);
               setSelectedOption(value);
@@ -67,9 +67,9 @@ function SearchComponent({ onSelect }) {
         options={[...player_content, ...team_content]}
         groupBy={(option) => option.category}
         getOptionLabel={(option) => option.title}
-        sx={{ width: 250 }}
+        sx={{ width: width }}
         size={"small"} 
-        fullWidth
+        fullWidth={true}
         renderOption={(props, option) => (
             <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
               <img
