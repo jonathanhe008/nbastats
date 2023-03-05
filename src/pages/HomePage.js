@@ -38,7 +38,7 @@ function HomePage() {
                 alignItems="center"
                 spacing={2}
                 sx={{marginTop: '2rem'}}>
-            <Header sx={{ marginBottom: '2rem' }} />
+            <Header team='LAL' sx={{ marginBottom: '2rem' }} />
             <Box display="flex" alignItems="center" textAlign="center">
                 <Typography variant="h6" fontFamily='Quicksand'>
                     Is your favorite player the GOAT?

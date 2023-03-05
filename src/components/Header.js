@@ -1,7 +1,8 @@
 import { Stack, Typography, Box } from '@mui/material';
 
-function Header() {
-  const goat = require('../assets/goat_LAL.png');
+function Header(props) {
+  const { team } = props;
+  const goat = require(`../assets/goat_${team}.png`);
   const nba = require('../assets/nba.png');
   return (
     <Stack direction="column" justifyContent="center" alignItems="center" spacing={1}>

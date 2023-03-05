@@ -72,7 +72,7 @@ function PlayerPage() {
             <Grid item xs={12} sm={3} textAlign="left">
             </Grid>
             <Grid item xs={12} sm={6}>
-            <Header></Header>
+            <Header team={teams[selectedOption.info.team.id].abbrev}></Header>
             </Grid>
             <Grid item xs={12} sm={3} textAlign="right" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <SearchComponent onSelect={handleSelect} width={250}></SearchComponent>
