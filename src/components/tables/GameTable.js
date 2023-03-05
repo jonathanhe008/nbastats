@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, Container, styled, Typography, TableContainer } from '@mui/material';
-import { fetchGameData } from '../../api/api';
+import { fetchPlayerGameData } from '../../api/api';
 import teams from '../../assets/teams.json'
 import players from '../../assets/players.json'
 import teamPlayers from '../../assets/team_players.json'
@@ -67,13 +67,13 @@ class GameTable extends Component {
   }
 
   async componentDidMount() {
-    const data = await fetchGameData(this.props.option);
+    const data = await fetchPlayerGameData(this.props.option);
     this.setState({ gameData: data });
   }
 
   async componentDidUpdate(prevProps) {
     if (this.props.option !== prevProps.option) {
-      const data = await fetchGameData(this.props.option);
+      const data = await fetchPlayerGameData(this.props.option);
       this.setState({ gameData: data});
     }
   }
@@ -135,6 +135,36 @@ class GameTable extends Component {
         {homeName}
       </>
     );
+  }
+
+  fetchTeamList(id) {
+    let player_list = [];
+    const team_players = teamPlayers[teams[id].abbrev];
+    console.log("Official team list: ", team_players);
+    players['league']['standard'].forEach(player => {
+      if (team_players.includes(`${player['firstName']} ${player['lastName']}`))
+        player_list.push(player);
+    });
+
+    return player_list;
+  }
+
+  async postBoxScore(data) {
+    const home_players = this.fetchTeamList(data.game.home_team_id);
+    const visitor_players = this.fetchTeamList(data.game.visitor_team_id);
+    console.log("Game", data)
+    this.props.onGameSelect({
+      home: home_players,
+      visitor: visitor_players,
+      id: data.game.id,
+      game: data.game
+    })
+  }
+
+
+  getDate(data) {
+    const [year, month, day] = data.game.date.substring(0, 10).split('-');
+    return <Typography component="a" href="game" onClick={(e) => { e.preventDefault(); this.postBoxScore(data) }} variant="highlight" >{`${month}/${day}/${year}`}</Typography>;
   }
 
   async getTeam(team_name) {
@@ -247,7 +277,7 @@ class GameTable extends Component {
               return (
               <TableRow key={d.game.id} style={{ paddingBottom: "10px" }}>
                   <StyledTableCell component="th" scope="row">
-                  {formatDate(d.game.date)}
+                  {this.getDate(d)}
                   </StyledTableCell>
                   <StyledTableCell sx={{ display: "flex", alignItems: "center" }}>
                     {this.getGame(d)}

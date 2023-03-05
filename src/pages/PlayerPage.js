@@ -36,6 +36,12 @@ function PlayerPage() {
       console.log(value);
       navigate(`/nbastats/${value.category.toLowerCase()}?name=${value.title}`, { state: { selectedOption: value } });
     };
+
+    const handleGameSelect = (value) => {
+        setSelectedOption(value);
+        console.log(value);
+        navigate(`/nbastats/game?id=${value.id}`, { state: { home: value.home, visitor: value.visitor, id: value.id, game: value.game } });
+    };
   
     
     const [selectedStat, setSelectedStat] = useState('Points');
@@ -85,7 +91,7 @@ function PlayerPage() {
         </Stack>
         <ChartCarousel selectedOption={selectedOption} selectedStat={selectedStat}></ChartCarousel>
         <br></br>
-        <GameTable option={selectedOption} onSelect={handleSelect}></GameTable>
+        <GameTable option={selectedOption} onSelect={handleSelect} onGameSelect={handleGameSelect}></GameTable>
         <Footer></Footer>
         </ThemeProvider>
         </div>

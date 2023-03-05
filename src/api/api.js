@@ -135,8 +135,57 @@ export async function fetchSeasonAverage(players) {
     return totals_map;
 }
 
+export async function fetchBoxScore(players, game) {
+  const playerIds = players.map(player => player['apiId']);
+  var url = new URL("https://www.balldontlie.io/api/v1/stats");
+  var params = {
+    'seasons[]': ['2022'], 
+    'game_ids[]': game,
+    'per_page': 100
+  };
+  url.search = new URLSearchParams(params).toString();
+
+  playerIds.forEach(id => {
+    url.searchParams.append('player_ids[]', id);
+  });
+
+  let response = await fetch(url, { method: "GET" });
+  let data = await response.json();
+
+  data.data.sort((a, b) => b.pts - a.pts)
+  const player_dict = players.reduce((acc, obj) => {
+      acc[obj.apiId] = obj;
+      return acc;
+  }, {});
+  
+  var score_map = {
+    "pts": {},
+    "ast": {},
+    "reb": {},
+    "blk": {},
+    "stl": {},
+    "turnover": {},
+    "min": {}
+  };
+  for (let player_stats of data.data) {
+    let player = player_dict[player_stats['player'].id];
+    var stats = ["pts", "ast", "reb", "blk", "stl", "turnover", "min"];
+    stats.forEach(function(stat) {
+      if (stat === "min") {
+        score_map[stat][`${player['firstName']} ${player['lastName']}`] = parseInt(player_stats[stat], 10);
+      } else {
+        score_map[stat][`${player['firstName']} ${player['lastName']}`] = player_stats[stat];
+      }
+    });
+  }
+
+  console.log("box_score_map => ", score_map);
+  return score_map;
+}
+
 const fetchPlayerStatsMemoized = memoize(fetchPlayerStats);
 const fetchSeasonAverageMemoized = memoize(fetchSeasonAverage);
+const fetchBoxScoreMemoized = memoize(fetchBoxScore);
 
 export const fetchTotalsData = memoize(async function(selection) {
     try {
@@ -150,7 +199,19 @@ export const fetchTotalsData = memoize(async function(selection) {
     }
 });
 
-export const fetchGameData = memoize(async function(selection) {
+export const fetchGameData = memoize(async function({ team, id }) {
+  try {
+    const box_map = await fetchBoxScoreMemoized(team, id);
+    return box_map;
+  } catch (error) {
+    return {
+      error: 'An error occurred while fetching the data.',
+    };
+  }
+});
+
+
+export const fetchPlayerGameData = memoize(async function(selection) {
     try {
       const player = selection.info;
       const maps = await fetchPlayerStatsMemoized(player);
