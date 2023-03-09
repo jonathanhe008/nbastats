@@ -34,13 +34,13 @@ function PlayerPage() {
     const handleSelect = (value) => {
       setSelectedOption(value);
       console.log(value);
-      navigate(`/nbastats/${value.category.toLowerCase()}?name=${value.title}`, { state: { selectedOption: value } });
+      navigate(`/${value.category.toLowerCase()}?name=${value.title}`, { state: { selectedOption: value } });
     };
 
     const handleGameSelect = (value) => {
         setSelectedOption(value);
         console.log(value);
-        navigate(`/nbastats/game?id=${value.id}`, { state: { home: value.home, visitor: value.visitor, id: value.id, game: value.game } });
+        navigate(`/game?id=${value.id}`, { state: { home: value.home, visitor: value.visitor, id: value.id, game: value.game } });
     };
   
     

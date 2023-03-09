@@ -33,7 +33,7 @@ function GamePage() {
   }, [location.state]);
 
     const handleSelect = (value) => {
-        navigate(`/nbastats/${value.category.toLowerCase()}?name=${value.title}`, { state: { selectedOption: value } });
+        navigate(`/${value.category.toLowerCase()}?name=${value.title}`, { state: { selectedOption: value } });
     };
 
 

@@ -16,7 +16,7 @@ import goats from '../assets/goats.png'
 function HomePage() {
   const navigate = useNavigate();
   const handleSelect = (value) => {
-    navigate(`/nbastats/${value.category.toLowerCase()}?name=${value.title}`, { state: { selectedOption: value } });
+    navigate(`/${value.category.toLowerCase()}?name=${value.title}`, { state: { selectedOption: value } });
   };
 
   const theme = createTheme({

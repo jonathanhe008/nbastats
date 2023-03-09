@@ -34,7 +34,7 @@ function TeamPage() {
   const handleSelect = (value) => {
     setSelectedOption(value);
     console.log(value);
-    navigate(`/nbastats/${value.category.toLowerCase()}?name=${value.title}`, { state: { selectedOption: value } });
+    navigate(`/${value.category.toLowerCase()}?name=${value.title}`, { state: { selectedOption: value } });
   };
 
   
