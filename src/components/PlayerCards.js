@@ -27,19 +27,19 @@ function PlayerCard(props) {
         <Typography gutterBottom variant="h5" component="div" sx={{ fontSize: isSmallScreen ? '1rem' : '1.5rem' }}>
           {full_name}
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ fontSize: isSmallScreen ? '0.5rem' : '0.875rem' }}>
+        <Typography variant="body2" color="text.secondary" sx={{ fontSize: isSmallScreen ? '0.6rem' : '0.875rem' }}>
           Points: {pts}
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ fontSize: isSmallScreen ? '0.5rem' : '0.875rem' }}>
+        <Typography variant="body2" color="text.secondary" sx={{ fontSize: isSmallScreen ? '0.6rem' : '0.875rem' }}>
           Assists: {ast}
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ fontSize: isSmallScreen ? '0.5rem' : '0.875rem' }}>
+        <Typography variant="body2" color="text.secondary" sx={{ fontSize: isSmallScreen ? '0.6rem' : '0.875rem' }}>
           Rebounds: {reb}
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ fontSize: isSmallScreen ? '0.5em' : '0.875rem' }}>
+        <Typography variant="body2" color="text.secondary" sx={{ fontSize: isSmallScreen ? '0.6rem' : '0.875rem' }}>
           Blocks: {blk}
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ fontSize: isSmallScreen ? '0.5rem' : '0.875rem' }}>
+        <Typography variant="body2" color="text.secondary" sx={{ fontSize: isSmallScreen ? '0.6rem' : '0.875rem' }}>
           Steals: {stl}
         </Typography>  
       </CardContent>
