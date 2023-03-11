@@ -83,7 +83,7 @@ function PlayerCards() {
   return (
     <div style={{ maxWidth: '100%', display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center'}}>
       {trendingData.map((player, index) => (
-        <PlayerCard key={index} player={player} sx={{ maxWidth: isSmallScreen ? 110 : 345 }}/>
+        <PlayerCard key={index} player={player} sx={{ maxWidth: isSmallScreen ? 110 : 250 }}/>
       ))}
     </div>
   );
