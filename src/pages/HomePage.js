@@ -13,6 +13,8 @@ import Header from '../components/Header'
 import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import goats from '../assets/goats.png'
+import PlayerCards from '../components/PlayerCards';
+
 function HomePage() {
   const navigate = useNavigate();
   const handleSelect = (value) => {
@@ -52,8 +54,10 @@ function HomePage() {
             <Container maxWidth="md">
             <SearchComponent onSelect={handleSelect} width={'100%'} />
             </Container>
+            <PlayerCards />
         </Stack>
-        <Box sx={{ flexShrink: 0, marginTop: 'auto', marginBottom: '1rem', position: 'fixed', bottom: 0, width: '100%' }}>
+        
+        <Box sx={{ flexShrink: 0, marginTop: 'auto', marginBottom: '1rem' }}>
             <Footer />
         </Box>
         </Box>

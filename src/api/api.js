@@ -1,4 +1,5 @@
 import memoize from 'memoize-one';
+import players from '../assets/players.json'
 
 export async function fetchPlayer(apiId) {
     var url = new URL(`https://www.balldontlie.io/api/v1/players/${apiId}`);
@@ -181,6 +182,73 @@ export async function fetchBoxScore(players, game) {
 
   console.log("box_score_map => ", score_map);
   return score_map;
+}
+
+function comparePlayers(a, b) {
+  const aPerformance = (a.pts + 1.2*a.reb + 1.5*a.ast + 2*a.stl + 2*a.blk + a.fg_pct) * 100;
+  const bPerformance = (b.pts + 1.2*b.reb + 1.5*b.ast + 2*b.stl + 2*b.blk + b.fg_pct) * 100;
+
+  if (aPerformance < bPerformance) {
+    return 1;
+  } else if (aPerformance > bPerformance) {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+
+
+export async function fetchTrendingPlayers(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const formattedDate = `${year}-${month}-${day}`;
+
+  const url = "https://www.balldontlie.io/api/v1/stats";
+  const seasons = ["2022"];
+  const dates = [formattedDate];
+  const perPage = 100;
+  let currentPage = 1;
+  let allData = [];
+
+  while (true) {
+    const params = {
+      "seasons[]": seasons,
+      "dates[]": dates,
+      "per_page": perPage,
+      "page": currentPage,
+    };
+    const apiUrl = `${url}?${new URLSearchParams(params).toString()}`;
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+    allData = allData.concat(data.data);
+
+    if (data.meta.next_page === null) {
+      break;
+    } else {
+      currentPage++;
+    }
+  }
+  if (allData.length === 0) {
+    return [];
+  }
+  
+  const sortedArray = allData.sort(comparePlayers);
+  const top_five = sortedArray.slice(0, 5);
+  for (const stat of top_five) {
+    const player_obj = players.league.standard.find(p => `${p.firstName} ${p.lastName}` === `${stat.player.first_name} ${stat.player.last_name}`);
+    const playerInfo = await fetchPlayer(player_obj.apiId);
+    stat.headshotId = player_obj.personId;
+    stat.selectedOptionObj = {
+      title: `${player_obj.firstName} ${player_obj.lastName}`,
+      id: player_obj.personId,
+      apiId: player_obj.apiId,
+      category: 'Player',
+      info: playerInfo
+    };
+  }    
+
+  return top_five;
 }
 
 const fetchPlayerStatsMemoized = memoize(fetchPlayerStats);
