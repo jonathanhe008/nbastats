@@ -221,7 +221,8 @@ export async function fetchTrendingPlayers(date) {
     const apiUrl = `${url}?${new URLSearchParams(params).toString()}`;
     const response = await fetch(apiUrl);
     const data = await response.json();
-    allData = allData.concat(data.data);
+    const finalData = data.data.filter(item => item.game.status === 'Final');
+    allData = allData.concat(finalData);
 
     if (data.meta.next_page === null) {
       break;
@@ -234,9 +235,16 @@ export async function fetchTrendingPlayers(date) {
   }
   
   const sortedArray = allData.sort(comparePlayers);
-  const top_five = sortedArray.slice(0, 5);
-  for (const stat of top_five) {
+  let top_five = [];
+  for (const stat of sortedArray) {
+    if (top_five.length === 5) {
+      break;
+    }
     const player_obj = players.league.standard.find(p => `${p.firstName} ${p.lastName}` === `${stat.player.first_name} ${stat.player.last_name}`);
+    
+    if (!player_obj) {
+      continue;
+    }
     const playerInfo = await fetchPlayer(player_obj.apiId);
     stat.headshotId = player_obj.personId;
     stat.selectedOptionObj = {
@@ -246,6 +254,7 @@ export async function fetchTrendingPlayers(date) {
       category: 'Player',
       info: playerInfo
     };
+    top_five.push(stat);
   }    
 
   return top_five;
