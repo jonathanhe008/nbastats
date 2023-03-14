@@ -16,6 +16,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { STAT_LIST } from '../assets/constants';
 import StatTabs from '../components/StatTabs';
 import PieChart from '../components/charts/PieChart';
+import chroma from 'chroma-js';
+
 function GamePage() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -50,8 +52,11 @@ function GamePage() {
     const homeTeam = teams[gameInfo.home_team_id];
     const visitorTeam = teams[gameInfo.visitor_team_id];
 
-    const primaryColor = `rgba(${teams[gameInfo.home_team_id].secondary_color}, 0.3)`
-    const secondaryColor = `rgba(${teams[gameInfo.visitor_team_id].secondary_color}, 0.3)`
+    const primaryColor = `rgba(${teams[gameInfo.home_team_id].secondary_color}, 0.5)`
+    const secondaryColor = `rgba(${teams[gameInfo.visitor_team_id].secondary_color}, 0.5)`
+    const midpointColor = chroma.mix(primaryColor, secondaryColor, 0.5, "rgb");
+
+    const gradient = `linear-gradient(135deg, ${primaryColor} 30%, ${midpointColor} 50%, ${secondaryColor} 70%)`;
     const theme = createTheme({
         typography: {
             fontFamily: 'Quicksand',
@@ -61,7 +66,7 @@ function GamePage() {
   return (
     <div className="App" >
       <Helmet>
-        <style>{`body { background: linear-gradient(135deg, ${primaryColor} 30%, ${secondaryColor} 70%); }`}</style>
+        <style>{`body { background: ${gradient}; }`}</style>
       </Helmet>
       <ThemeProvider theme={theme}>
       <CssBaseline />
