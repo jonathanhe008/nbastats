@@ -4,14 +4,20 @@ import { fetchGameData, fetchPlayer } from '../../api/api';
 import players from '../../assets/players.json'
 
 function sortObject(obj, order) {
-    const sortedEntries = Object.entries(obj).sort((a, b) => {
-      if (order === "desc") {
-        return b[1] - a[1];
-      } else {
-        return a[1] - b[1];
-      }
-    });
-    return Object.fromEntries(sortedEntries);
+  const sortedEntries = Object.entries(obj).sort((a, b) => {
+    if (a[1] === -1 && b[1] === -1) {
+      return 0;
+    } else if (a[1] === -1) {
+      return 1;
+    } else if (b[1] === -1) {
+      return -1;
+    } else if (order === "desc") {
+      return b[1] - a[1];
+    } else {
+      return a[1] - b[1];
+    }
+  });
+  return Object.fromEntries(sortedEntries);
 }
 
 const StyledTableCell = styled(TableCell)({
@@ -85,7 +91,7 @@ function BoxScoreTable(props) {
                 {`${player['firstName']} ${player['lastName']}`}
               </Typography>
             </StyledTableCell>
-            {[totalsMap['pts'][playerId], totalsMap['reb'][playerId], totalsMap['ast'][playerId], totalsMap['min'][playerId], totalsMap['blk'][playerId], totalsMap['turnover'][playerId], totalsMap['stl'][playerId]].every(val => val === 0) ? 
+            {totalsMap['min'][playerId] === -1 ? 
             <>
                 <StyledTableCell colSpan={7} align="center">DNP</StyledTableCell>
             </>

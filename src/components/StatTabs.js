@@ -11,7 +11,8 @@ function StatTabs({ options, onChange, selectedOption }) {
   };
   
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const theme = createTheme({
+
+  let themeOptions = selectedOption ? {
     components: {
         MuiTabs: {
           styleOverrides: {
@@ -41,7 +42,13 @@ function StatTabs({ options, onChange, selectedOption }) {
       typography: {
         fontFamily: 'Quicksand'
       },
-    });
+    } : {
+        typography: {
+          fontFamily: 'Quicksand'
+        }
+      };
+
+  const theme = createTheme(themeOptions);
   return (
     <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center'  }}>
     <ThemeProvider theme={theme}>

@@ -168,17 +168,30 @@ export async function fetchBoxScore(players, game) {
     "turnover": {},
     "min": {}
   };
+  function hasNonZeroStats(player_stats) {
+    var stats = ["pts", "ast", "reb", "blk", "stl", "turnover", "min"];
+    return stats.some(stat => parseInt(player_stats[stat], 10) !== 0);
+  }
+  
   for (let player_stats of data.data) {
     let player = player_dict[player_stats['player'].id];
     var stats = ["pts", "ast", "reb", "blk", "stl", "turnover", "min"];
-    stats.forEach(function(stat) {
-      if (stat === "min") {
-        score_map[stat][`${player['firstName']} ${player['lastName']}`] = parseInt(player_stats[stat], 10);
-      } else {
-        score_map[stat][`${player['firstName']} ${player['lastName']}`] = player_stats[stat];
-      }
-    });
+    if (hasNonZeroStats(player_stats)) {
+      stats.forEach(function(stat) {
+        let value = player_stats[stat];
+        if (stat === "min") {
+          value = parseInt(value, 10);
+        }
+        score_map[stat][`${player['firstName']} ${player['lastName']}`] = value;
+      });
+    } else {
+      stats.forEach(function(stat) {
+        score_map[stat][`${player['firstName']} ${player['lastName']}`] = -1;
+      });
+    }
   }
+  
+  
 
   console.log("box_score_map => ", score_map);
   return score_map;
@@ -241,7 +254,7 @@ export async function fetchTrendingPlayers(date) {
       break;
     }
     const player_obj = players.league.standard.find(p => `${p.firstName} ${p.lastName}` === `${stat.player.first_name} ${stat.player.last_name}`);
-    
+
     if (!player_obj) {
       continue;
     }
@@ -300,6 +313,25 @@ export const fetchPlayerGameData = memoize(async function(selection) {
         error: 'An error occurred while fetching the data.',
       };
     }
+});
+
+export const fetchPieData = memoize(async function(team, id, stat) {
+  try {
+    const box_map = await fetchBoxScoreMemoized(team, id);
+    const data = getSpecificStat(box_map, stat);
+    const filteredData = data.filter((player) => player.count !== -1);
+    filteredData.sort((a, b) => b.count - a.count);
+    return {
+      labels: filteredData.map(row => row.stat),
+      data: filteredData.map(row => row.count),
+      title: `${stat} this Season`,
+      stat: stat
+    };
+  } catch (error) {
+    return {
+      error: 'An error occurred while fetching the data.',
+    };
+  }
 });
 
 export const fetchDoughnutData = memoize(async function(selection, stat) {

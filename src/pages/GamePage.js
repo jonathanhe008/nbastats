@@ -13,8 +13,9 @@ import teams from '../assets/teams.json'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
 import { useLocation, useNavigate } from 'react-router-dom';
-
-
+import { STAT_LIST } from '../assets/constants';
+import StatTabs from '../components/StatTabs';
+import PieChart from '../components/charts/PieChart';
 function GamePage() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -36,6 +37,12 @@ function GamePage() {
         navigate(`/${value.category.toLowerCase()}?name=${value.title}`, { state: { selectedOption: value } });
     };
 
+    const [selectedStat, setSelectedStat] = useState('Points');
+  
+    const handleStatChange = (option) => {
+      setSelectedStat(option);
+      console.log(option);
+    };
 
     if (location.state === null || homeTeamList === null || visitorTeamList === null || gameId === null) {
         return <div>Loading...</div>;
@@ -69,9 +76,11 @@ function GamePage() {
         </Grid>
       </Grid>
       <br></br>
+      <StatTabs options={STAT_LIST} onChange={handleStatChange} />
+      <br></br>
       <Grid container spacing={2} alignItems="center" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Grid item>
-        <img alt="Home Team Logo" src={homeTeam.logo} height="100" />
+        <img alt="Home Team Logo" src={homeTeam.logo} style={{ marginRight: "0.5rem", marginLeft: "0.5rem", width: "10em", height: "10em", objectFit: "contain" }} />
         </Grid>
         <Grid item>
         <Grid container direction="column" alignItems="center">
@@ -84,8 +93,20 @@ function GamePage() {
         </Grid>
         </Grid>
         <Grid item>
-        <img alt="Visitor Team Logo" src={visitorTeam.logo} height="100" />
+        <img alt="Visitor Team Logo" src={visitorTeam.logo} style={{ marginRight: "0.5rem", marginLeft: "0.5rem", width: "10em", height: "10em", objectFit: "contain" }} />
         </Grid>
+    </Grid>
+    <Grid container spacing={2} style={{ justifyContent: 'center' }}>
+    <Grid item xs={2}></Grid>
+        <Grid item xs={2}>
+        <PieChart team={homeTeamList} id={gameId} stat={selectedStat} teamColor={gameInfo.home_team_id}></PieChart>
+        </Grid>
+        <Grid item xs={2}></Grid>
+        <Grid item xs={2}></Grid>
+        <Grid item xs={2}>
+        <PieChart team={visitorTeamList} id={gameId} stat={selectedStat} teamColor={gameInfo.visitor_team_id}></PieChart>
+        </Grid>
+        <Grid item xs={2}></Grid>
     </Grid>
     <br></br>
       <Grid container spacing={2}>

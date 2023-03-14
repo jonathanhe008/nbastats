@@ -4,6 +4,7 @@ import { fetchLineData } from '../../api/api';
 import { Chart as ChartJS, registerables } from 'chart.js';
 import teams from '../../assets/teams.json';
 import annotationPlugin from 'chartjs-plugin-annotation';
+import 'chartjs-adapter-date-fns';
 
 ChartJS.register(...registerables, annotationPlugin);
 const LineChart = ({ option, stat }) => {
@@ -50,11 +51,6 @@ const LineChart = ({ option, stat }) => {
                       borderColor: `rgba(${teams[option.info.team.id].primary_color}, 0.5)`,
                       borderWidth: 2,
                       borderDash: [5, 5],
-                      // label: {
-                      //   content: `Average ${chartData.stat}: ${average}`,
-                      //   display: true,
-                      //   position: 'start',
-                      // }
                     }
                   }
                 }
@@ -64,6 +60,7 @@ const LineChart = ({ option, stat }) => {
             },
             scales: {
               y: {
+                beginAtZero: true,
                 title: {
                   display: true,
                   text: `${stat}`
@@ -73,7 +70,14 @@ const LineChart = ({ option, stat }) => {
                 title: {
                   display: true,
                   text: 'Date'
-                }
+                },
+                type: 'time',
+                time: {
+                  displayFormats: {
+                    day: 'MMM dd',
+                  },
+                  tooltipFormat: 'MMM dd',
+                },
               }
             }
         }}
