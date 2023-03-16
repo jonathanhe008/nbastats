@@ -152,11 +152,9 @@ class GameTable extends Component {
   async postBoxScore(data) {
     const home_players = this.fetchTeamList(data.game.home_team_id);
     const visitor_players = this.fetchTeamList(data.game.visitor_team_id);
-    console.log("Game", data)
     this.props.onGameSelect({
       home: home_players,
       visitor: visitor_players,
-      id: data.game.id,
       game: data.game
     })
   }

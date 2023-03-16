@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import goats from '../assets/goats.png'
 import PlayerCards from '../components/PlayerCards';
+import GameCards from '../components/GameCards';
 
 function HomePage() {
   const navigate = useNavigate();
@@ -55,8 +56,8 @@ function HomePage() {
             <SearchComponent onSelect={handleSelect} width={'100%'} />
             </Container>
             <PlayerCards />
+            <GameCards />
         </Stack>
-        
         <Box sx={{ flexShrink: 0, marginTop: 'auto', marginBottom: '1rem' }}>
             <Footer />
         </Box>

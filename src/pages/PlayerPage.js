@@ -40,7 +40,7 @@ function PlayerPage() {
     const handleGameSelect = (value) => {
         setSelectedOption(value);
         console.log(value);
-        navigate(`/game?id=${value.id}`, { state: { home: value.home, visitor: value.visitor, id: value.id, game: value.game } });
+        navigate(`/game?id=${value.game.id}`, { state: { home: value.home, visitor: value.visitor, game: value.game } });
     };
   
     

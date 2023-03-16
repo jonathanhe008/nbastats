@@ -42,7 +42,7 @@ function BoxScoreTable(props) {
   
     useEffect(() => {
         async function fetchData() {
-            const data = await fetchGameData({team, id});
+            const data = await fetchGameData(team, id);
             setTotalsData(data);
         }
         fetchData();

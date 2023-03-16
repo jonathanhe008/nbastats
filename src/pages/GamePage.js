@@ -7,16 +7,18 @@ import {
   CssBaseline
 } from '@mui/material';
 import { Helmet } from 'react-helmet';
+import { useLocation, useNavigate } from 'react-router-dom';
+import chroma from 'chroma-js';
 import SearchComponent from '../components/Search';
-import BoxScoreTable from '../components/tables/BoxScoreTable';
-import teams from '../assets/teams.json'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
-import { useLocation, useNavigate } from 'react-router-dom';
-import { STAT_LIST } from '../assets/constants';
 import StatTabs from '../components/StatTabs';
-import PieChart from '../components/charts/PieChart';
-import chroma from 'chroma-js';
+import GameTables from '../components/GameTables';
+import GameHeader from '../components/GameHeader';
+import GameCharts from '../components/charts/GameCharts';
+import teams from '../assets/teams.json'
+import { STAT_LIST } from '../assets/constants';
+
 
 function GamePage() {
   const location = useLocation();
@@ -30,7 +32,7 @@ function GamePage() {
     if (location.state) {
         setHomeTeamList(location.state.home);
         setVisitorTeamList(location.state.visitor);
-        setGameId(location.state.id);
+        setGameId(location.state.game.id);
         setGameInfo(location.state.game);
     }
   }, [location.state]);
@@ -64,7 +66,7 @@ function GamePage() {
     });
   
   return (
-    <div className="App" >
+    <div className="App">
       <Helmet>
         <style>{`body { background: ${gradient}; }`}</style>
       </Helmet>
@@ -83,45 +85,11 @@ function GamePage() {
       <br></br>
       <StatTabs options={STAT_LIST} onChange={handleStatChange} />
       <br></br>
-      <Grid container spacing={2} alignItems="center" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <Grid item>
-        <img alt="Home Team Logo" src={homeTeam.logo} style={{ marginRight: "0.5rem", marginLeft: "0.5rem", width: "10em", height: "10em", objectFit: "contain" }} />
-        </Grid>
-        <Grid item>
-        <Grid container direction="column" alignItems="center">
-            <Grid item>
-            <b>{gameInfo.home_team_score} - {gameInfo.visitor_team_score}</b>
-            </Grid>
-            <Grid item>
-            <b>VS</b>
-            </Grid>
-        </Grid>
-        </Grid>
-        <Grid item>
-        <img alt="Visitor Team Logo" src={visitorTeam.logo} style={{ marginRight: "0.5rem", marginLeft: "0.5rem", width: "10em", height: "10em", objectFit: "contain" }} />
-        </Grid>
-    </Grid>
-    <Grid container spacing={2} style={{ justifyContent: 'center' }}>
-    <Grid item xs={2}></Grid>
-        <Grid item xs={2}>
-        <PieChart team={homeTeamList} id={gameId} stat={selectedStat} teamColor={gameInfo.home_team_id}></PieChart>
-        </Grid>
-        <Grid item xs={2}></Grid>
-        <Grid item xs={2}></Grid>
-        <Grid item xs={2}>
-        <PieChart team={visitorTeamList} id={gameId} stat={selectedStat} teamColor={gameInfo.visitor_team_id}></PieChart>
-        </Grid>
-        <Grid item xs={2}></Grid>
-    </Grid>
+    <GameHeader homeLogo={homeTeam.logo} visitorLogo={visitorTeam.logo}homeScore={gameInfo.home_team_score} visitorScore={gameInfo.visitor_team_score}></GameHeader>
+    <GameCharts homeTeamList={homeTeamList} visitorTeamList={visitorTeamList} gameId={gameId} 
+      selectedStat={selectedStat} homeColor={gameInfo.home_team_id} visitorColor={gameInfo.visitor_team_id}></GameCharts>
     <br></br>
-      <Grid container spacing={2}>
-        <Grid item xs={6}>
-            <BoxScoreTable key="home" team={homeTeamList} id={gameId} onSelect={handleSelect} />
-        </Grid>
-        <Grid item xs={6}>
-            <BoxScoreTable key="visitor" team={visitorTeamList} id={gameId} onSelect={handleSelect} />
-        </Grid>
-        </Grid>
+      <GameTables home={homeTeamList} visitor={visitorTeamList} id={gameId} handleSelect={handleSelect} />
       <Footer></Footer>
       </ThemeProvider>
     </div>

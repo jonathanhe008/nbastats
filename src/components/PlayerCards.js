@@ -3,6 +3,7 @@ import { Card, CardContent, CardMedia, Typography, CardActionArea, useMediaQuery
 import { useTheme } from '@mui/material/styles';
 import { fetchTrendingPlayers } from '../api/api';
 import { Link } from 'react-router-dom';
+
 function PlayerCard(props) {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -81,11 +82,17 @@ function PlayerCards() {
 
   console.log(trendingData)
   return (
+    <>
+    <Typography component="h4" variant="h4" sx={{ paddingTop: '20px' }}>
+        Top Dawgs 
+   </Typography>
+   {/* <img alt="DAWG" src={dog} height="100px" style={{ marginTop: '30px' }}/>  */}
     <div style={{ maxWidth: '100%', display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center'}}>
       {trendingData.map((player, index) => (
         <PlayerCard key={index} player={player} sx={{ maxWidth: isSmallScreen ? 110 : 250 }}/>
       ))}
     </div>
+    </>
   );
 }
 

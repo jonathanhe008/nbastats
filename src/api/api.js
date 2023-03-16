@@ -1,5 +1,7 @@
 import memoize from 'memoize-one';
 import players from '../assets/players.json'
+import teamPlayers from '../assets/team_players.json'
+import teams from '../assets/teams.json'
 
 export async function fetchPlayer(apiId) {
     var url = new URL(`https://www.balldontlie.io/api/v1/players/${apiId}`);
@@ -273,6 +275,47 @@ export async function fetchTrendingPlayers(date) {
   return top_five;
 }
 
+export async function fetchTrendingGames(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const formattedDate = `${year}-${month}-${day}`;
+
+  const url = "https://www.balldontlie.io/api/v1/games";
+  const seasons = ["2022"];
+  const dates = [formattedDate];
+  const perPage = 100;
+
+  
+  const params = {
+    "seasons[]": seasons,
+    "dates[]": dates,
+    "per_page": perPage,
+  };
+  const apiUrl = `${url}?${new URLSearchParams(params).toString()}`;
+  const response = await fetch(apiUrl);
+  const data = await response.json();
+
+  if (data.data.length === 0) {
+    return [];
+  }
+
+  console.log(data.data)
+  let game_list = [];
+  for (let game of data.data) {
+    const home_players = fetchTeamList(game.home_team.id);
+    const visitor_players = fetchTeamList(game.visitor_team.id);
+    game_list.push({
+      home: home_players,
+      visitor: visitor_players,
+      game: {...game, home_team_id: game.home_team.id, visitor_team_id: game.visitor_team.id}
+    });
+
+  }
+
+  return game_list;
+}
+
 const fetchPlayerStatsMemoized = memoize(fetchPlayerStats);
 const fetchSeasonAverageMemoized = memoize(fetchSeasonAverage);
 const fetchBoxScoreMemoized = memoize(fetchBoxScore);
@@ -289,7 +332,7 @@ export const fetchTotalsData = memoize(async function(selection) {
     }
 });
 
-export const fetchGameData = memoize(async function({ team, id }) {
+export const fetchGameData = memoize(async function(team, id) {
   try {
     const box_map = await fetchBoxScoreMemoized(team, id);
     return box_map;
@@ -411,4 +454,16 @@ export function getSpecificStat(stat_map, stat) {
     }
     console.log("getSpecificStat => ", result);
     return result;
+}
+
+export function fetchTeamList(id) {
+  let player_list = [];
+  const team_players = teamPlayers[teams[id].abbrev];
+  console.log("Official team list: ", team_players);
+  players['league']['standard'].forEach(player => {
+    if (team_players.includes(`${player['firstName']} ${player['lastName']}`))
+      player_list.push(player);
+  });
+
+  return player_list;
 }
