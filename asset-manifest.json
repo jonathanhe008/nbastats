@@ -1,9 +1,10 @@
 {
   "files": {
     "main.css": "/nbastats/static/css/main.b5f72e13.css",
-    "main.js": "/nbastats/static/js/main.e6b9fe12.js",
+    "main.js": "/nbastats/static/js/main.1dae4038.js",
     "static/js/787.c3dcaf5a.chunk.js": "/nbastats/static/js/787.c3dcaf5a.chunk.js",
     "static/media/goats.png": "/nbastats/static/media/goats.330fe6c32af30d1172a9.png",
+    "static/media/dog_crown.png": "/nbastats/static/media/dog_crown.c217eb9984aa9c73a8c3.png",
     "static/media/logo-gray.png": "/nbastats/static/media/logo-gray.a889536c6fb27f5d8cc8.png",
     "static/media/goat_LAL.png": "/nbastats/static/media/goat_LAL.ffa1f4d67f8603f46472.png",
     "static/media/goat_BOS.png": "/nbastats/static/media/goat_BOS.c822e4436aad5335546c.png",
@@ -54,11 +55,11 @@
     "static/media/quicksand-vietnamese-700-normal.woff2": "/nbastats/static/media/quicksand-vietnamese-700-normal.f16da1766f969ce75e43.woff2",
     "index.html": "/nbastats/index.html",
     "main.b5f72e13.css.map": "/nbastats/static/css/main.b5f72e13.css.map",
-    "main.e6b9fe12.js.map": "/nbastats/static/js/main.e6b9fe12.js.map",
+    "main.1dae4038.js.map": "/nbastats/static/js/main.1dae4038.js.map",
     "787.c3dcaf5a.chunk.js.map": "/nbastats/static/js/787.c3dcaf5a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.b5f72e13.css",
-    "static/js/main.e6b9fe12.js"
+    "static/js/main.1dae4038.js"
   ]
 }
