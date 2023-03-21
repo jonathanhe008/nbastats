@@ -93,7 +93,7 @@ function BoxScoreTable(props) {
             </StyledTableCell>
             {totalsMap['min'][playerId] === -1 ? 
             <>
-                <StyledTableCell colSpan={7} align="center">DNP</StyledTableCell>
+                <StyledTableCell colSpan={9} align="center">DNP</StyledTableCell>
             </>
             :
             <>
@@ -104,6 +104,8 @@ function BoxScoreTable(props) {
                 <StyledTableCell>{totalsMap['stl'][playerId]}</StyledTableCell>
                 <StyledTableCell>{totalsMap['blk'][playerId]}</StyledTableCell>
                 <StyledTableCell>{totalsMap['turnover'][playerId]}</StyledTableCell>
+                <StyledTableCell>{totalsMap['fg'][playerId]}</StyledTableCell>
+                <StyledTableCell>{totalsMap['fg3'][playerId]}</StyledTableCell>
             </>
             }
           </TableRow>
@@ -186,6 +188,12 @@ function BoxScoreTable(props) {
               <b>Tov</b>
             </TableSortLabel>
           </StyledTableCell>
+          <StyledTableCell>
+            <b>FG</b>
+            </StyledTableCell>
+            <StyledTableCell>
+            <b>3PT</b>
+            </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>

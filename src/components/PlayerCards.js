@@ -83,7 +83,7 @@ function PlayerCards() {
   console.log(trendingData)
   return (
     <>
-   <img alt="Top Dawgs" src={dog} height="100px" style={{ marginTop: '20px' }}/> 
+    <img alt="Top Dawgs" src={dog} height="100px" style={{ marginTop: '20px' }}/>
     <div style={{ maxWidth: '100%', display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center'}}>
       {trendingData.map((player, index) => (
         <PlayerCard key={index} player={player} sx={{ maxWidth: isSmallScreen ? 110 : 250 }}/>

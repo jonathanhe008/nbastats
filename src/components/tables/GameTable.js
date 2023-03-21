@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, Container, styled, Typography, TableContainer } from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, styled, Typography, TableContainer } from '@mui/material';
 import { fetchPlayerGameData } from '../../api/api';
 import teams from '../../assets/teams.json'
 import players from '../../assets/players.json'
@@ -190,8 +190,7 @@ class GameTable extends Component {
     }
     const sortedData = stableSort(gameData, getComparator(order, orderBy), orderBy);
     return (
-      <Container fixed>
-      <TableContainer sx={{ overflowX: "auto" }}>
+      <TableContainer sx={{ overflowX: "auto", maxWidth: "80%", margin: "0 auto" }}>
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
@@ -268,6 +267,12 @@ class GameTable extends Component {
                 <b>Tov</b>
               </TableSortLabel>
             </StyledTableCell>
+            <StyledTableCell>
+            <b>FG</b>
+            </StyledTableCell>
+            <StyledTableCell>
+            <b>3PT</b>
+            </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -282,7 +287,7 @@ class GameTable extends Component {
                     <div style={{ marginLeft: "auto", marginRight: "1rem" }}>{this.getGameResult(d)}</div>
                   </StyledTableCell>
                   {isDnp(d) ? 
-                  (<StyledTableCell colSpan={7} align="center">
+                  (<StyledTableCell colSpan={9} align="center">
                   DNP
                   </StyledTableCell>) : (
                   <>
@@ -293,6 +298,8 @@ class GameTable extends Component {
                   <StyledTableCell>{d.stl}</StyledTableCell>
                   <StyledTableCell>{d.blk}</StyledTableCell>
                   <StyledTableCell>{d.turnover}</StyledTableCell>
+                  <StyledTableCell>{d.fgm}-{d.fga}</StyledTableCell>
+                  <StyledTableCell>{d.fg3m}-{d.fg3a}</StyledTableCell>
                   </>
                   )}
               </TableRow>
@@ -301,7 +308,6 @@ class GameTable extends Component {
           </TableBody>
         </Table>
         </TableContainer>
-      </Container>
     );
 
  }

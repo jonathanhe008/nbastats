@@ -63,6 +63,9 @@ export async function fetchPlayerStats(player) {
         "min": {}
     }
 
+    var fg3 = [];
+    var fg = [];
+
     for (let d of sorted_data) {
         if (d.min === "00" || d.min === "" || d.min === "0" || d.min === "0:00") {
              continue;
@@ -79,14 +82,22 @@ export async function fetchPlayerStats(player) {
                 trend_map[stat][d.game.date.substring(0,10)] = d[stat];
             }
         });
+        let fg_pct = d['fg_pct'] * 100
+        let fg3_pct = d['fg3_pct'] * 100
+        fg3.push({ x: d['fg3a'],  y: fg3_pct.toFixed(1),  r: d['fg3m'], label: d.game.date.substring(0,10)})
+        fg.push({ x: d['fga'],  y: fg_pct.toFixed(1),  r: d['fgm'], label: d.game.date.substring(0,10)})
     }
 
     console.log("stat_map => ", stat_map);
     console.log("trend_map => ", trend_map);
+    console.log("fg3 =>", fg3);
+    console.log("fg =>", fg);
     return {
         stat: stat_map,
         trend: trend_map,
-        data: sorted_data
+        data: sorted_data,
+        fg3: fg3,
+        fg: fg
     };
 }
 
@@ -168,7 +179,9 @@ export async function fetchBoxScore(players, game) {
     "blk": {},
     "stl": {},
     "turnover": {},
-    "min": {}
+    "min": {},
+    "fg3": {},
+    "fg": {}
   };
   function hasNonZeroStats(player_stats) {
     var stats = ["pts", "ast", "reb", "blk", "stl", "turnover", "min"];
@@ -177,13 +190,20 @@ export async function fetchBoxScore(players, game) {
   
   for (let player_stats of data.data) {
     let player = player_dict[player_stats['player'].id];
-    var stats = ["pts", "ast", "reb", "blk", "stl", "turnover", "min"];
+    var stats = ["pts", "ast", "reb", "blk", "stl", "turnover", "min", "fg3", "fg"];
     if (hasNonZeroStats(player_stats)) {
       stats.forEach(function(stat) {
-        let value = player_stats[stat];
+        let value = -1;
         if (stat === "min") {
-          value = parseInt(value, 10);
+          value = parseInt(player_stats[stat], 10);
+        } else if (stat === "fg") {
+          value = `${player_stats['fgm']}-${player_stats['fga']}`;
+        } else if (stat === "fg3") {
+          value = `${player_stats['fg3m']}-${player_stats['fg3a']}`;
+        } else {
+          value = player_stats[stat]
         }
+
         score_map[stat][`${player['firstName']} ${player['lastName']}`] = value;
       });
     } else {
@@ -413,6 +433,22 @@ export const fetchBarData = memoize(async function(selection, stat) {
         error: 'An error occurred while fetching the data.',
       };
     }
+});
+
+export const fetchBubbleData = memoize(async function(selection, stat) {
+  try {
+    const player = selection.info;
+    const maps = await fetchPlayerStatsMemoized(player);
+    const fgdata = stat === '3PT' ? maps.fg3 : maps.fg;
+    return {
+      data: fgdata,
+      title: `${player['first_name']} ${player['last_name']} ${stat} this Season`,
+    };
+  } catch (error) {
+    return {
+      error: 'An error occurred while fetching the data.',
+    };
+  }
 });
 
 export const fetchLineData = memoize(async function(selection, stat) {
