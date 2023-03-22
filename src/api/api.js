@@ -442,7 +442,7 @@ export const fetchBubbleData = memoize(async function(selection, stat) {
     const fgdata = stat === '3PT' ? maps.fg3 : maps.fg;
     return {
       data: fgdata,
-      title: `${player['first_name']} ${player['last_name']} ${stat} this Season`,
+      title: `${player['first_name']} ${player['last_name']} ${stat} Efficiency this Season`,
     };
   } catch (error) {
     return {

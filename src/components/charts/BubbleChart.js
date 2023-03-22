@@ -25,7 +25,7 @@ const BubbleChart = ({ option, stat }) => {
         data={{
           datasets: [
             {
-              label: `${stat}`,
+              label: `${stat} Efficiency in a Game`,
               data: chartData.data,
               backgroundColor: `rgb(${teams[option.info.team.id].primary_color})`,
             },

@@ -268,10 +268,22 @@ class GameTable extends Component {
               </TableSortLabel>
             </StyledTableCell>
             <StyledTableCell>
-            <b>FG</b>
+            <TableSortLabel
+                active={orderBy === "fgm"}
+                direction={orderBy === "fgm" ? order : "desc"}
+                onClick={() => this.handleSortRequest("fgm")}
+              >
+                <b>FG</b>
+              </TableSortLabel>
             </StyledTableCell>
             <StyledTableCell>
-            <b>3PT</b>
+            <TableSortLabel
+                active={orderBy === "fg3m"}
+                direction={orderBy === "fg3m" ? order : "desc"}
+                onClick={() => this.handleSortRequest("fg3m")}
+              >
+                <b>3PT</b>
+              </TableSortLabel>
             </StyledTableCell>
             </TableRow>
           </TableHead>

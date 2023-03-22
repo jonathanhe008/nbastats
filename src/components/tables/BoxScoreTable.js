@@ -5,20 +5,33 @@ import players from '../../assets/players.json'
 
 function sortObject(obj, order) {
   const sortedEntries = Object.entries(obj).sort((a, b) => {
-    if (a[1] === -1 && b[1] === -1) {
+    if (typeof a[1] === "string") {
+      a = a[1].split("-").map(Number)[0];
+    } else {
+      a = a[1];
+    }
+    
+    if (typeof b[1] === "string") {
+      b = b[1].split("-").map(Number)[0];
+    } else {
+      b = b[1];
+    }
+    
+    if (a === -1 && b === -1) {
       return 0;
-    } else if (a[1] === -1) {
+    } else if (a === -1) {
       return 1;
-    } else if (b[1] === -1) {
+    } else if (b === -1) {
       return -1;
     } else if (order === "desc") {
-      return b[1] - a[1];
+      return b - a;
     } else {
-      return a[1] - b[1];
+      return a - b;
     }
   });
   return Object.fromEntries(sortedEntries);
 }
+
 
 const StyledTableCell = styled(TableCell)({
   padding: '.2rem .2rem'
@@ -189,11 +202,23 @@ function BoxScoreTable(props) {
             </TableSortLabel>
           </StyledTableCell>
           <StyledTableCell>
-            <b>FG</b>
-            </StyledTableCell>
-            <StyledTableCell>
-            <b>3PT</b>
-            </StyledTableCell>
+            <TableSortLabel
+              active={orderBy === "fg"}
+              direction={orderBy === "fg" ? order : "desc"}
+              onClick={() => handleSortRequest("fg")}
+            >
+              <b>FG</b>
+            </TableSortLabel>
+          </StyledTableCell>
+          <StyledTableCell>
+            <TableSortLabel
+              active={orderBy === "fg3"}
+              direction={orderBy === "fg3" ? order : "desc"}
+              onClick={() => handleSortRequest("fg3")}
+            >
+              <b>3PT</b>
+            </TableSortLabel>
+          </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
