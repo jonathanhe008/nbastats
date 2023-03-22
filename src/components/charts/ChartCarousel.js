@@ -18,6 +18,7 @@ function ChartCarousel(props) {
         <Box sx={{ width: '50%', height: '50%', margin: '0 auto', '@media screen and (max-width: 767px)': {
             width: '100%', height: '100%'
           } }} display="flex" flexDirection="column" alignItems="center">
+            { props.selectedStat === "Points" ? <>
             <div className="chartBox">
                 {activeChart === 1 ? <LineChart option={props.selectedOption} stat={props.selectedStat}></LineChart> :
                 activeChart === 2 ? <BarChart option={props.selectedOption} stat={props.selectedStat}></BarChart> :
@@ -28,6 +29,15 @@ function ChartCarousel(props) {
             <Stack alignItems="center">
             <Pagination count={5} page={activeChart} onChange={handleChange} />
             </Stack>
+            </> : <>
+            <div className="chartBox">
+                {activeChart === 1 ? <LineChart option={props.selectedOption} stat={props.selectedStat}></LineChart> :
+                 <BarChart option={props.selectedOption} stat={props.selectedStat}></BarChart>}
+            </div>
+            <Stack alignItems="center">
+            <Pagination count={2} page={activeChart} onChange={handleChange} />
+            </Stack>
+            </>}
         </Box> : 
         <Box sx={{ width: '50%', height: '50%', margin: '0 auto', '@media screen and (max-width: 767px)': {
             width: '100%', height: '100%'
