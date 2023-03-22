@@ -34,6 +34,7 @@ const DoughnutChart = ({ option, stat }) => {
           ],
         }}
         options={{
+          maintainAspectRatio : false,
           plugins: {
             title: {
               display: true,

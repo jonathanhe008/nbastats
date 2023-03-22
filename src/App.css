@@ -16,7 +16,12 @@ a {
   height: auto;
 }
 
-.chartBox {
+.playerChartBox {
   width: 99%;
   min-height: 375px;
+}
+
+.teamChartBox {
+  width: 99%;
+  min-height: 500px;
 }
