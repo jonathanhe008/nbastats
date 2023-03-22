@@ -119,6 +119,7 @@ function BoxScoreTable(props) {
                 <StyledTableCell>{totalsMap['turnover'][playerId]}</StyledTableCell>
                 <StyledTableCell>{totalsMap['fg'][playerId]}</StyledTableCell>
                 <StyledTableCell>{totalsMap['fg3'][playerId]}</StyledTableCell>
+                <StyledTableCell>{totalsMap['ft'][playerId]}</StyledTableCell>
             </>
             }
           </TableRow>
@@ -217,6 +218,15 @@ function BoxScoreTable(props) {
               onClick={() => handleSortRequest("fg3")}
             >
               <b>3PT</b>
+            </TableSortLabel>
+          </StyledTableCell>
+          <StyledTableCell>
+            <TableSortLabel
+              active={orderBy === "ft"}
+              direction={orderBy === "ft" ? order : "desc"}
+              onClick={() => handleSortRequest("ft")}
+            >
+              <b>FT</b>
             </TableSortLabel>
           </StyledTableCell>
           </TableRow>

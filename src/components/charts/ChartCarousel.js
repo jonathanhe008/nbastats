@@ -21,11 +21,12 @@ function ChartCarousel(props) {
             <div className="chartBox">
                 {activeChart === 1 ? <LineChart option={props.selectedOption} stat={props.selectedStat}></LineChart> :
                 activeChart === 2 ? <BarChart option={props.selectedOption} stat={props.selectedStat}></BarChart> :
-                activeChart === 3 ? <BubbleChart option={props.selectedOption} stat='3PT' /> :
-                <BubbleChart option={props.selectedOption} stat='FG' />}
+                activeChart === 3 ? <BubbleChart option={props.selectedOption} stat='FG' /> :
+                activeChart === 4 ? <BubbleChart option={props.selectedOption} stat='3PT' /> :
+                <BubbleChart option={props.selectedOption} stat='FT' />}
             </div>
             <Stack alignItems="center">
-            <Pagination count={4} page={activeChart} onChange={handleChange} />
+            <Pagination count={5} page={activeChart} onChange={handleChange} />
             </Stack>
         </Box> : 
         <Box sx={{ width: '50%', height: '50%', margin: '0 auto', '@media screen and (max-width: 767px)': {

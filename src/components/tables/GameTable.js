@@ -190,7 +190,7 @@ class GameTable extends Component {
     }
     const sortedData = stableSort(gameData, getComparator(order, orderBy), orderBy);
     return (
-      <TableContainer sx={{ overflowX: "auto", maxWidth: "80%", margin: "0 auto" }}>
+      <TableContainer sx={{ overflowX: "auto", maxWidth: "85%", margin: "0 auto" }}>
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
@@ -285,6 +285,15 @@ class GameTable extends Component {
                 <b>3PT</b>
               </TableSortLabel>
             </StyledTableCell>
+            <StyledTableCell>
+            <TableSortLabel
+                active={orderBy === "ftm"}
+                direction={orderBy === "ftm" ? order : "desc"}
+                onClick={() => this.handleSortRequest("ftm")}
+              >
+                <b>FT</b>
+              </TableSortLabel>
+            </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -299,7 +308,7 @@ class GameTable extends Component {
                     <div style={{ marginLeft: "auto", marginRight: "1rem" }}>{this.getGameResult(d)}</div>
                   </StyledTableCell>
                   {isDnp(d) ? 
-                  (<StyledTableCell colSpan={9} align="center">
+                  (<StyledTableCell colSpan={10} align="center">
                   DNP
                   </StyledTableCell>) : (
                   <>
@@ -312,6 +321,7 @@ class GameTable extends Component {
                   <StyledTableCell>{d.turnover}</StyledTableCell>
                   <StyledTableCell>{d.fgm}-{d.fga}</StyledTableCell>
                   <StyledTableCell>{d.fg3m}-{d.fg3a}</StyledTableCell>
+                  <StyledTableCell>{d.ftm}-{d.fta}</StyledTableCell>
                   </>
                   )}
               </TableRow>

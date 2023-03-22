@@ -65,6 +65,7 @@ export async function fetchPlayerStats(player) {
 
     var fg3 = [];
     var fg = [];
+    var ft = [];
 
     for (let d of sorted_data) {
         if (d.min === "00" || d.min === "" || d.min === "0" || d.min === "0:00") {
@@ -84,20 +85,24 @@ export async function fetchPlayerStats(player) {
         });
         let fg_pct = d['fg_pct'] * 100
         let fg3_pct = d['fg3_pct'] * 100
+        let ft_pct = d['ft_pct'] * 100
         fg3.push({ x: d['fg3a'],  y: fg3_pct.toFixed(1),  r: d['fg3m'], label: d.game.date.substring(0,10)})
         fg.push({ x: d['fga'],  y: fg_pct.toFixed(1),  r: d['fgm'], label: d.game.date.substring(0,10)})
+        ft.push({ x: d['fta'],  y: ft_pct.toFixed(1),  r: d['ftm'], label: d.game.date.substring(0,10)})
     }
 
     console.log("stat_map => ", stat_map);
     console.log("trend_map => ", trend_map);
     console.log("fg3 =>", fg3);
     console.log("fg =>", fg);
+    console.log("ft =>", ft);
     return {
         stat: stat_map,
         trend: trend_map,
         data: sorted_data,
         fg3: fg3,
-        fg: fg
+        fg: fg,
+        ft: ft
     };
 }
 
@@ -181,7 +186,8 @@ export async function fetchBoxScore(players, game) {
     "turnover": {},
     "min": {},
     "fg3": {},
-    "fg": {}
+    "fg": {},
+    "ft": {}
   };
   function hasNonZeroStats(player_stats) {
     var stats = ["pts", "ast", "reb", "blk", "stl", "turnover", "min"];
@@ -190,7 +196,7 @@ export async function fetchBoxScore(players, game) {
   
   for (let player_stats of data.data) {
     let player = player_dict[player_stats['player'].id];
-    var stats = ["pts", "ast", "reb", "blk", "stl", "turnover", "min", "fg3", "fg"];
+    var stats = ["pts", "ast", "reb", "blk", "stl", "turnover", "min", "fg3", "fg", "ft"];
     if (hasNonZeroStats(player_stats)) {
       stats.forEach(function(stat) {
         let value = -1;
@@ -200,6 +206,8 @@ export async function fetchBoxScore(players, game) {
           value = `${player_stats['fgm']}-${player_stats['fga']}`;
         } else if (stat === "fg3") {
           value = `${player_stats['fg3m']}-${player_stats['fg3a']}`;
+        } else if (stat === "ft") {
+          value = `${player_stats['ftm']}-${player_stats['fta']}`;
         } else {
           value = player_stats[stat]
         }
@@ -439,7 +447,7 @@ export const fetchBubbleData = memoize(async function(selection, stat) {
   try {
     const player = selection.info;
     const maps = await fetchPlayerStatsMemoized(player);
-    const fgdata = stat === '3PT' ? maps.fg3 : maps.fg;
+    const fgdata = stat === '3PT' ? maps.fg3 : stat === 'FG' ? maps.fg : maps.ft;
     return {
       data: fgdata,
       title: `${player['first_name']} ${player['last_name']} ${stat} Efficiency this Season`,
