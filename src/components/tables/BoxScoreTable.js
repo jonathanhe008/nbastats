@@ -49,7 +49,7 @@ const player_content = players['league']['standard'].map(function(player) {
 
 function BoxScoreTable(props) {
     const { team, id, onSelect } = props;
-    const [orderBy, setOrderBy] = useState("min");
+    const [orderBy, setOrderBy] = useState("pts");
     const [order, setOrder] = useState("desc");
     const [totalsData, setTotalsData] = useState(null);
   

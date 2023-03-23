@@ -94,13 +94,13 @@ class TeamStatsTable extends Component {
                 {`${player['firstName']} ${player['lastName']}`}
               </Typography>
             </StyledTableCell>
+            <StyledTableCell>{new Intl.NumberFormat().format(totalsMap['min'][playerId])}</StyledTableCell>
             <StyledTableCell>{totalsMap['pts'][playerId]}</StyledTableCell>
             <StyledTableCell>{totalsMap['ast'][playerId]}</StyledTableCell>
             <StyledTableCell>{totalsMap['reb'][playerId]}</StyledTableCell>
             <StyledTableCell>{totalsMap['stl'][playerId]}</StyledTableCell>
             <StyledTableCell>{totalsMap['blk'][playerId]}</StyledTableCell>
             <StyledTableCell>{totalsMap['turnover'][playerId]}</StyledTableCell>
-            <StyledTableCell>{new Intl.NumberFormat().format(totalsMap['min'][playerId])}</StyledTableCell>
             <StyledTableCell>{totalsMap['fg_pct'][playerId]}%</StyledTableCell>
             <StyledTableCell>{totalsMap['fg3_pct'][playerId]}%</StyledTableCell>
             <StyledTableCell>{totalsMap['ft_pct'][playerId]}%</StyledTableCell>
@@ -124,6 +124,15 @@ class TeamStatsTable extends Component {
           <TableHead>
           <TableRow>
           <StyledTableCell><b>Player</b></StyledTableCell>
+          <StyledTableCell>
+            <TableSortLabel
+              active={orderBy === "min"}
+              direction={orderBy === "min" ? order : "desc"}
+              onClick={() => this.handleSortRequest("min")}
+            >
+              <b>Min</b>
+            </TableSortLabel>
+          </StyledTableCell>
           <StyledTableCell>
             <TableSortLabel
               active={orderBy === "pts"}
@@ -176,15 +185,6 @@ class TeamStatsTable extends Component {
               onClick={() => this.handleSortRequest("turnover")}
             >
               <b>Tov</b>
-            </TableSortLabel>
-          </StyledTableCell>
-          <StyledTableCell>
-            <TableSortLabel
-              active={orderBy === "min"}
-              direction={orderBy === "min" ? order : "desc"}
-              onClick={() => this.handleSortRequest("min")}
-            >
-              <b>Min</b>
             </TableSortLabel>
           </StyledTableCell>
           <StyledTableCell>
