@@ -1,9 +1,9 @@
-import { Grid, useTheme, useMediaQuery } from '@mui/material';
+import { Grid, useTheme, useMediaQuery, Typography } from '@mui/material';
 
 function GameHeader(props) {
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-    const { homeLogo, visitorLogo, homeScore, visitorScore } = props;
+    const { homeLogo, visitorLogo, homeScore, visitorScore, gameStatus } = props;
     return (
         <Grid container spacing={2} alignItems="center" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Grid item>
@@ -12,10 +12,14 @@ function GameHeader(props) {
             <Grid item>
                 <Grid container direction="column" alignItems="center">
                     <Grid item>
+                    <Typography variant={isSmallScreen ? "h5" : "h3"} align="center" color="black">
                     <b>{homeScore} - {visitorScore}</b>
+                    </Typography>
                     </Grid>
                     <Grid item>
-                    <b>VS</b>
+                    <Typography variant={isSmallScreen ? "subtitle1" : "h5"} align="center" color="black">
+                    {gameStatus}
+                    </Typography>
                     </Grid>
                 </Grid>
                 </Grid>

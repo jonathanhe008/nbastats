@@ -85,7 +85,7 @@ function GamePage() {
       <br></br>
       <StatTabs options={STAT_LIST} onChange={handleStatChange} />
       <br></br>
-    <GameHeader homeLogo={homeTeam.logo} visitorLogo={visitorTeam.logo}homeScore={gameInfo.home_team_score} visitorScore={gameInfo.visitor_team_score}></GameHeader>
+    <GameHeader homeLogo={homeTeam.logo} visitorLogo={visitorTeam.logo}homeScore={gameInfo.home_team_score} visitorScore={gameInfo.visitor_team_score} gameStatus={gameInfo.status}></GameHeader>
     <GameCharts homeTeamList={homeTeamList} visitorTeamList={visitorTeamList} gameId={gameId} 
       selectedStat={selectedStat} homeColor={gameInfo.home_team_id} visitorColor={gameInfo.visitor_team_id}></GameCharts>
     <br></br>
