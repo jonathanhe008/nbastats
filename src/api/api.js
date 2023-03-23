@@ -114,7 +114,10 @@ export async function fetchSeasonAverage(players) {
         "blk": {},
         "stl": {},
         "turnover": {},
-        "min": {}
+        "min": {},
+        "ft_pct": {},
+        "fg_pct": {},
+        "fg3_pct": {},
     };
 
     const playerIds = players.map(player => player['apiId']);
@@ -138,15 +141,20 @@ export async function fetchSeasonAverage(players) {
 
     for (let averages of data.data) {
         let player = player_dict[averages['player_id']];
-        var stats = ["pts", "ast", "reb", "blk", "stl", "turnover", "min"];
+        var stats = ["pts", "ast", "reb", "blk", "stl", "turnover", "min", "ft_pct", "fg_pct", "fg3_pct"];
         stats.forEach(function(stat) {
+            let avg_stat = averages[stat]
             if (stat === "min") {
                 const parts = averages[stat].split(":");
                 const minutes = parseInt(parts[0])+ (parseInt(parts[1])/60);
-                totals_map[stat][`${player['firstName']} ${player['lastName']}`] = minutes.toFixed(1);
+                avg_stat = minutes.toFixed(1);
+            } else if (stat === "ft_pct" || stat === "fg3_pct" || stat === "fg_pct") {
+                avg_stat = (averages[stat]*100).toFixed(1)
             } else {
-                totals_map[stat][`${player['firstName']} ${player['lastName']}`] = averages[stat].toFixed(1);
+                avg_stat = averages[stat].toFixed(1);
             }
+
+            totals_map[stat][`${player['firstName']} ${player['lastName']}`] = avg_stat
         });
     }
 

@@ -101,6 +101,9 @@ class TeamStatsTable extends Component {
             <StyledTableCell>{totalsMap['blk'][playerId]}</StyledTableCell>
             <StyledTableCell>{totalsMap['turnover'][playerId]}</StyledTableCell>
             <StyledTableCell>{new Intl.NumberFormat().format(totalsMap['min'][playerId])}</StyledTableCell>
+            <StyledTableCell>{totalsMap['fg_pct'][playerId]}%</StyledTableCell>
+            <StyledTableCell>{totalsMap['fg3_pct'][playerId]}%</StyledTableCell>
+            <StyledTableCell>{totalsMap['ft_pct'][playerId]}%</StyledTableCell>
           </TableRow>
         );
       }
@@ -182,6 +185,33 @@ class TeamStatsTable extends Component {
               onClick={() => this.handleSortRequest("min")}
             >
               <b>Min</b>
+            </TableSortLabel>
+          </StyledTableCell>
+          <StyledTableCell>
+            <TableSortLabel
+              active={orderBy === "fg_pct"}
+              direction={orderBy === "fg_pct" ? order : "desc"}
+              onClick={() => this.handleSortRequest("fg_pct")}
+            >
+              <b>FG</b>
+            </TableSortLabel>
+          </StyledTableCell>
+          <StyledTableCell>
+            <TableSortLabel
+              active={orderBy === "fg3_pct"}
+              direction={orderBy === "fg3_pct" ? order : "desc"}
+              onClick={() => this.handleSortRequest("fg3_pct")}
+            >
+              <b>3PT</b>
+            </TableSortLabel>
+          </StyledTableCell>
+          <StyledTableCell>
+            <TableSortLabel
+              active={orderBy === "ft_pct"}
+              direction={orderBy === "ft_pct" ? order : "desc"}
+              onClick={() => this.handleSortRequest("ft_pct")}
+            >
+              <b>FT</b>
             </TableSortLabel>
           </StyledTableCell>
           </TableRow>
