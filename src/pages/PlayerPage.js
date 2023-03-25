@@ -19,6 +19,7 @@ import Footer from '../components/Footer'
 import Header from '../components/Header'
 import { STAT_LIST } from '../assets/constants';
 import { useLocation, useNavigate } from 'react-router-dom';
+import SeasonAverageTable from '../components/tables/SeasonAverageTable';
 
 function PlayerPage() {
     const location = useLocation();
@@ -90,6 +91,8 @@ function PlayerPage() {
         </Container>
         </Stack>
         <ChartCarousel selectedOption={selectedOption} selectedStat={selectedStat}></ChartCarousel>
+        <br></br>
+        <SeasonAverageTable option={selectedOption} onSelect={handleSelect} ></SeasonAverageTable>
         <br></br>
         <GameTable option={selectedOption} onSelect={handleSelect} onGameSelect={handleGameSelect}></GameTable>
         <Footer></Footer>

@@ -106,7 +106,7 @@ export async function fetchPlayerStats(player) {
     };
 }
 
-export async function fetchSeasonAverage(players) {
+export async function fetchSeasonAverages(players) {
     var totals_map = {
         "pts": {},
         "ast": {},
@@ -119,7 +119,7 @@ export async function fetchSeasonAverage(players) {
         "fg_pct": {},
         "fg3_pct": {},
     };
-
+    
     const playerIds = players.map(player => player['apiId']);
     var url = new URL("https://www.balldontlie.io/api/v1/season_averages");
     var params = {
@@ -130,7 +130,7 @@ export async function fetchSeasonAverage(players) {
     let response = await fetch(url, { method: "GET" });
     let data = await response.json();
 
-    console.log("fetchSeasonAverage => ", data);
+    console.log("fetchSeasonAverages => ", data);
     data.data.sort((a, b) => b.pts - a.pts)
     const player_dict = players.reduce((acc, obj) => {
         acc[obj.apiId] = obj;
@@ -160,6 +160,34 @@ export async function fetchSeasonAverage(players) {
 
     console.log("team_totals_map => ", totals_map);
     return totals_map;
+}
+
+export async function fetchSeasonAverage(player) {
+  var url = new URL("https://www.balldontlie.io/api/v1/season_averages");
+  var params = {
+      'season': '2022', 
+      'player_ids[]': [player],
+  };
+  url.search = new URLSearchParams(params).toString();
+  let response = await fetch(url, { method: "GET" });
+  let data = await response.json();
+
+  console.log("fetchSeasonAverage => ", data);
+  const playerAverage = data.data[0]
+  var stats = ["pts", "ast", "reb", "blk", "stl", "turnover", "min", "ft_pct", "fg_pct", "fg3_pct"];
+  stats.forEach(function(stat) {
+      if (stat === "min") {
+        const parts = playerAverage['min'].split(":");
+        const minutes = parseInt(parts[0])+ (parseInt(parts[1])/60);
+        playerAverage['min'] = minutes.toFixed(1);
+      } else if (stat === "ft_pct" || stat === "fg3_pct" || stat === "fg_pct") {
+        playerAverage[stat] = (playerAverage[stat]*100).toFixed(1) + "%"
+      } else {
+        playerAverage[stat] = playerAverage[stat].toFixed(1);
+      }
+  });
+
+  return playerAverage;
 }
 
 export async function fetchBoxScore(players, game) {
@@ -353,13 +381,24 @@ export async function fetchTrendingGames(date) {
 }
 
 const fetchPlayerStatsMemoized = memoize(fetchPlayerStats);
-const fetchSeasonAverageMemoized = memoize(fetchSeasonAverage);
+const fetchSeasonAveragesMemoized = memoize(fetchSeasonAverages);
 const fetchBoxScoreMemoized = memoize(fetchBoxScore);
+const fetchSeasonAverageMemoized = memoize(fetchSeasonAverage);
 
-export const fetchTotalsData = memoize(async function(selection) {
+export const fetchAverageData = memoize(async function(player) {
+  try {
+    const season_stats = await fetchSeasonAverageMemoized(player);
+    return season_stats;
+  } catch (error) {
+    return {
+      error: 'An error occurred while fetching the data.',
+    };
+  }
+});
+
+export const fetchTotalsData = memoize(async function(players) {
     try {
-      const players = selection.info;
-      const totals_map = await fetchSeasonAverageMemoized(players);
+      const totals_map = await fetchSeasonAveragesMemoized(players);
       return totals_map;
     } catch (error) {
       return {
@@ -416,7 +455,7 @@ export const fetchPieData = memoize(async function(team, id, stat) {
 export const fetchDoughnutData = memoize(async function(selection, stat) {
     try {
       const player_list = selection.info;
-      const totals_map = await fetchSeasonAverageMemoized(player_list);
+      const totals_map = await fetchSeasonAveragesMemoized(player_list);
       const data = getSpecificStat(totals_map, stat);
       data.sort((a, b) => b.count - a.count)
       return {

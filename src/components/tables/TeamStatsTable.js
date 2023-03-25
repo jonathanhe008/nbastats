@@ -40,13 +40,13 @@ class TeamStatsTable extends Component {
     }
   
     async componentDidMount() {
-      const data = await fetchTotalsData(this.props.option);
+      const data = await fetchTotalsData(this.props.option.info);
       this.setState({ totalsData: data });
     }
   
     async componentDidUpdate(prevProps) {
       if (this.props.option !== prevProps.option) {
-        const data = await fetchTotalsData(this.props.option);
+        const data = await fetchTotalsData(this.props.option.info);
         this.setState({ totalsData: data, players: this.props.option.info });
       }
     }
