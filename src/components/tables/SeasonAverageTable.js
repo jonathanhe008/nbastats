@@ -105,7 +105,8 @@ class SeasonAverageTable extends Component {
             <TableRow>
             <StyledTableCell sx={{ display: "flex", alignItems: "center" }}>
             <img src={teams[team.id].logo} alt="team logo" style={{ marginRight: "1rem", marginLeft: "0.5rem", width: "2em", height: "2em", objectFit: "contain" }} /> 
-            <Typography component="a" href="team" onClick={(e) => { e.preventDefault(); this.getTeam(team.full_name) }} variant="highlight" sx={{ marginRight: "0.5rem" }}>{team.full_name}</Typography>
+            <Typography component="a" href="team" onClick={(e) => { e.preventDefault(); this.getTeam(team.full_name) }} variant="highlight" sx={{ marginRight: "12.75rem" ,
+            '@media screen and (max-width: 767px)': { marginRight: "0.5rem" }}}>{team.full_name}</Typography>
             </StyledTableCell>
             <StyledTableCell>{averageData.min}</StyledTableCell>
             <StyledTableCell>{averageData.pts}</StyledTableCell>
