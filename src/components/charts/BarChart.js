@@ -5,16 +5,16 @@ import { Chart as ChartJS, registerables } from 'chart.js';
 import teams from '../../assets/teams.json';
 
 ChartJS.register(...registerables);
-const BarChart = ({ option, stat }) => {
+const BarChart = ({ option, stat, yearRange }) => {
   const [chartData, setChartData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetchBarData(option, stat);
+      const data = await fetchBarData(option, stat, yearRange);
       setChartData(data);
     };
     fetchData();
-  }, [option, stat]);
+  }, [option, stat, yearRange]);
 
   if (!chartData) {
     return <div>Loading...</div>;

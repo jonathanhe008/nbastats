@@ -13,33 +13,38 @@ export async function fetchPlayer(apiId) {
     return data;
 }
 
-export async function fetchPlayerStats(player) {
+export async function fetchPlayerStats(player, yearRange) {
     var player_id = player ? player['id'] : 237;
-    var url = new URL("https://www.balldontlie.io/api/v1/stats");
-    var params = {
-        'seasons[]': ['2022'], 
-        'player_ids[]': [player_id],
-        'per_page': 100
-    };
-    url.search = new URLSearchParams(params).toString();
-    let response = await fetch(url, { method: "GET" });
-    let data = await response.json();
+    const seasons = Array.from({ length: yearRange[1] - yearRange[0] + 1 }, (_, i) => yearRange[0] + i);
+    // const seasons = ['2022', '2021'];
+    const perPage = 100;
+    let currentPage = 1;
+    let data = [];
+  
+    while (true) {
+      let url = new URL("https://www.balldontlie.io/api/v1/stats");
+      const params = {
+        "player_ids[]": player_id,
+        "per_page": perPage,
+        "page": currentPage,
+      };
+      url.search = new URLSearchParams(params).toString();
+      seasons.forEach(id => {
+        url.searchParams.append('seasons[]', id);
+      });
 
-    if (data.data.length === 0) {
-        const img = document.querySelector("#headshot");
-        img.src = `https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/2544.png`;
-        let url = new URL("https://www.balldontlie.io/api/v1/stats");
-        let params = {
-            'seasons[]': ['2022'], 
-            'player_ids[]': [237],
-            'per_page': 100
-        };
-        url.search = new URLSearchParams(params).toString();
-        let response = await fetch(url, { method: "GET" });
-        data = await response.json();
+      let response = await fetch(url, { method: "GET" });
+      const data_response = await response.json();
+      data = data.concat(data_response.data);
+  
+      if (data_response.meta.next_page === null) {
+        break;
+      } else {
+        currentPage++;
+      }
     }
 
-    var sorted_data = data.data.sort((a, b) => {
+    var sorted_data = data.sort((a, b) => {
         return new Date(b.game.date) - new Date(a.game.date);
     });
 
@@ -68,7 +73,7 @@ export async function fetchPlayerStats(player) {
     var ft = [];
 
     for (let d of sorted_data) {
-        if (d.min === "00" || d.min === "" || d.min === "0" || d.min === "0:00") {
+        if (!d.min || d.min === "00" || d.min === "" || d.min === "0" || d.min === "0:00") {
              continue;
         }
         var stats = ["pts", "ast", "reb", "blk", "stl", "turnover", "min"];
@@ -77,15 +82,14 @@ export async function fetchPlayerStats(player) {
             if (stat === "min") {
                 stat_map[stat][minutes] = (stat_map[stat][minutes] || 0) + 1;
                 trend_map[stat][d.game.date.substring(0,10)] = minutes
-            }
-            else {
+            } else {
                 stat_map[stat][d[stat]] = (stat_map[stat][d[stat]] || 0) + 1;
                 trend_map[stat][d.game.date.substring(0,10)] = d[stat];
             }
         });
-        let fg_pct = d['fg_pct'] * 100
-        let fg3_pct = d['fg3_pct'] * 100
-        let ft_pct = d['ft_pct'] * 100
+        let fg_pct = d['fg_pct'] <= 1 ? d['fg_pct'] * 100 : d['fg_pct']
+        let fg3_pct = d['fg3_pct'] <= 1 ? d['fg3_pct'] * 100 : d['fg3_pct']
+        let ft_pct = d['ft_pct'] <= 1 ? d['ft_pct'] * 100 : d['ft_pct']
         fg3.push({ x: d['fg3a'],  y: fg3_pct.toFixed(1),  r: d['fg3m'], label: d.game.date.substring(0,10)})
         fg.push({ x: d['fga'],  y: fg_pct.toFixed(1),  r: d['fgm'], label: d.game.date.substring(0,10)})
         ft.push({ x: d['fta'],  y: ft_pct.toFixed(1),  r: d['ftm'], label: d.game.date.substring(0,10)})
@@ -190,29 +194,19 @@ export async function fetchSeasonAverage(player) {
   return playerAverage;
 }
 
-export async function fetchBoxScore(players, game) {
-  const playerIds = players.map(player => player['apiId']);
+export async function fetchBoxScore(isHome, game) {
   var url = new URL("https://www.balldontlie.io/api/v1/stats");
   var params = {
-    'seasons[]': ['2022'], 
     'game_ids[]': game,
     'per_page': 100
   };
   url.search = new URLSearchParams(params).toString();
 
-  playerIds.forEach(id => {
-    url.searchParams.append('player_ids[]', id);
-  });
-
   let response = await fetch(url, { method: "GET" });
   let data = await response.json();
+  const filteredData = data.data.filter((stats) => isHome ? stats.game.home_team_id === stats.team.id : stats.game.visitor_team_id === stats.team.id);
+  filteredData.sort((a, b) => b.pts - a.pts)
 
-  data.data.sort((a, b) => b.pts - a.pts)
-  const player_dict = players.reduce((acc, obj) => {
-      acc[obj.apiId] = obj;
-      return acc;
-  }, {});
-  
   var score_map = {
     "pts": {},
     "ast": {},
@@ -226,14 +220,12 @@ export async function fetchBoxScore(players, game) {
     "ft": {}
   };
   function hasNonZeroStats(player_stats) {
-    var stats = ["pts", "ast", "reb", "blk", "stl", "turnover", "min"];
+    var stats = ["pts", "ast", "reb", "blk", "stl", "turnover"];
     return stats.some(stat => parseInt(player_stats[stat], 10) !== 0);
   }
-  
-  for (let player_stats of data.data) {
-    let player = player_dict[player_stats['player'].id];
+  for (let player_stats of filteredData) {
     var stats = ["pts", "ast", "reb", "blk", "stl", "turnover", "min", "fg3", "fg", "ft"];
-    if (hasNonZeroStats(player_stats)) {
+    if (player_stats["min"] !== null && hasNonZeroStats(player_stats)) {
       stats.forEach(function(stat) {
         let value = -1;
         if (stat === "min") {
@@ -248,16 +240,14 @@ export async function fetchBoxScore(players, game) {
           value = player_stats[stat]
         }
 
-        score_map[stat][`${player['firstName']} ${player['lastName']}`] = value;
+        score_map[stat][`${player_stats['player'].first_name} ${player_stats['player'].last_name}`] = value;
       });
     } else {
       stats.forEach(function(stat) {
-        score_map[stat][`${player['firstName']} ${player['lastName']}`] = -1;
+        score_map[stat][`${player_stats['player'].first_name} ${player_stats['player'].last_name}`] = -1;
       });
     }
   }
-  
-  
 
   console.log("box_score_map => ", score_map);
   return score_map;
@@ -364,7 +354,6 @@ export async function fetchTrendingGames(date) {
     return [];
   }
 
-  console.log(data.data)
   let game_list = [];
   for (let game of data.data) {
     const home_players = fetchTeamList(game.home_team.id);
@@ -377,6 +366,7 @@ export async function fetchTrendingGames(date) {
 
   }
 
+  console.log("Trending Games =>", game_list);
   return game_list;
 }
 
@@ -407,9 +397,9 @@ export const fetchTotalsData = memoize(async function(players) {
     }
 });
 
-export const fetchGameData = memoize(async function(team, id) {
+export const fetchGameData = memoize(async function(isHome, id) {
   try {
-    const box_map = await fetchBoxScoreMemoized(team, id);
+    const box_map = await fetchBoxScoreMemoized(isHome, id);
     return box_map;
   } catch (error) {
     return {
@@ -419,10 +409,10 @@ export const fetchGameData = memoize(async function(team, id) {
 });
 
 
-export const fetchPlayerGameData = memoize(async function(selection) {
+export const fetchPlayerGameData = memoize(async function(selection, yearRange) {
     try {
       const player = selection.info;
-      const maps = await fetchPlayerStatsMemoized(player);
+      const maps = await fetchPlayerStatsMemoized(player, yearRange);
       const games = maps.data;
       console.log("Game data => ", games)
       return games;
@@ -433,9 +423,9 @@ export const fetchPlayerGameData = memoize(async function(selection) {
     }
 });
 
-export const fetchPieData = memoize(async function(team, id, stat) {
+export const fetchPieData = memoize(async function(isHome, id, stat) {
   try {
-    const box_map = await fetchBoxScoreMemoized(team, id);
+    const box_map = await fetchBoxScoreMemoized(isHome, id);
     const data = getSpecificStat(box_map, stat);
     const filteredData = data.filter((player) => player.count !== -1);
     filteredData.sort((a, b) => b.count - a.count);
@@ -471,10 +461,10 @@ export const fetchDoughnutData = memoize(async function(selection, stat) {
     }
 });
 
-export const fetchBarData = memoize(async function(selection, stat) {
+export const fetchBarData = memoize(async function(selection, stat, yearRange) {
     try {
       const player = selection.info;
-      const maps = await fetchPlayerStatsMemoized(player);
+      const maps = await fetchPlayerStatsMemoized(player, yearRange);
       const stat_map = maps.stat;
       const bar_data = getSpecificStat(stat_map, stat)
       return {
@@ -490,10 +480,10 @@ export const fetchBarData = memoize(async function(selection, stat) {
     }
 });
 
-export const fetchBubbleData = memoize(async function(selection, stat) {
+export const fetchBubbleData = memoize(async function(selection, stat, yearRange) {
   try {
     const player = selection.info;
-    const maps = await fetchPlayerStatsMemoized(player);
+    const maps = await fetchPlayerStatsMemoized(player, yearRange);
     const fgdata = stat === '3PT' ? maps.fg3 : stat === 'FG' ? maps.fg : maps.ft;
     return {
       data: fgdata,
@@ -506,10 +496,10 @@ export const fetchBubbleData = memoize(async function(selection, stat) {
   }
 });
 
-export const fetchLineData = memoize(async function(selection, stat) {
+export const fetchLineData = memoize(async function(selection, stat, yearRange) {
     try {
       const player = selection.info;
-      const maps = await fetchPlayerStatsMemoized(player);
+      const maps = await fetchPlayerStatsMemoized(player, yearRange);
       const trend_map = maps.trend;
       const trend_data = getSpecificStat(trend_map, stat).reverse();
       return {

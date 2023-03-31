@@ -1,9 +1,13 @@
 import { Grid, useTheme, useMediaQuery, Typography } from '@mui/material';
 
+const formatDate = (dateString) => {
+    const [year, month, day] = dateString.substring(0, 10).split('-');
+    return `${month}/${day}/${year}`;
+};
 function GameHeader(props) {
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-    const { homeLogo, visitorLogo, homeScore, visitorScore, gameStatus } = props;
+    const { homeLogo, visitorLogo, homeScore, visitorScore, gameStatus, date } = props;
     return (
         <Grid container spacing={2} alignItems="center" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Grid item>
@@ -11,6 +15,11 @@ function GameHeader(props) {
             </Grid>
             <Grid item>
                 <Grid container direction="column" alignItems="center">
+                    <Grid item>
+                    <Typography variant={isSmallScreen ? "subtitle1" : "h5"} align="center" color="black">
+                    {formatDate(date)}
+                    </Typography>
+                    </Grid>
                     <Grid item>
                     <Typography variant={isSmallScreen ? "h5" : "h3"} align="center" color="black">
                     <b>{homeScore} - {visitorScore}</b>

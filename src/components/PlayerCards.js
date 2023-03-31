@@ -80,7 +80,6 @@ function PlayerCards() {
     return <div>Loading recent trending players... </div>;
   }
 
-  console.log(trendingData)
   return (
     <>
     <img alt="Top Dawgs" src={dog} height="100px" style={{ marginTop: '20px' }}/>

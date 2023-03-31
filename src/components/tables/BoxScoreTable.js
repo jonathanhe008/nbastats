@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow, TableSortLabel, Container, styled, Typography, TableContainer } from '@mui/material';
 import { fetchGameData, fetchPlayer } from '../../api/api';
 import players from '../../assets/players.json'
-
+import blank from '../../assets/blank.png'
 function sortObject(obj, order) {
   const sortedEntries = Object.entries(obj).sort((a, b) => {
     if (typeof a[1] === "string") {
@@ -48,18 +48,18 @@ const player_content = players['league']['standard'].map(function(player) {
 
 
 function BoxScoreTable(props) {
-    const { team, id, onSelect } = props;
+    const { isHome, id, onSelect } = props;
     const [orderBy, setOrderBy] = useState("pts");
     const [order, setOrder] = useState("desc");
     const [totalsData, setTotalsData] = useState(null);
   
     useEffect(() => {
         async function fetchData() {
-            const data = await fetchGameData(team, id);
+            const data = await fetchGameData(isHome, id);
             setTotalsData(data);
         }
         fetchData();
-    }, [team, id]);
+    }, [isHome, id]);
   
     const handleSortRequest = (cellId) => {
       const isDesc = orderBy === cellId && order === "desc";
@@ -76,35 +76,54 @@ function BoxScoreTable(props) {
       });
     }
 
-    const createTableRows = (totalsMap, players, order, orderBy) => {
+    const createTableRows = (totalsMap, order, orderBy) => {
       const rows = [];
-      const playerDict = players.reduce((acc, obj) => {
-          acc[`${obj['firstName']} ${obj['lastName']}`] = obj;
-          return acc;
-      }, {});
       const iter = sortObject(totalsMap[orderBy], order);
+      
       for (let playerId in iter) {
-        const player = playerDict[playerId];
-        if (!(`${player['firstName']} ${player['lastName']}` in totalsMap['pts'])) {
+        let player = player_content.find(obj => obj.title === playerId);
+        if (!player) {
+          player = {
+            title: playerId,
+            id: -1,
+            apiId: -1,
+            category: 'Player'
+          }
+
+        }
+        if (!(player.title in totalsMap['pts'])) {
             continue;
         }
 
         rows.push(
           <TableRow key={playerId}>
+            {player.id !== -1 ? 
             <StyledTableCell sx={{ display: 'flex', alignItems: 'center' }}>
-              <img src={`https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${player['personId']}.png`} 
-              alt={`${player['firstName']} ${player['lastName']}`} style={{ marginRight: "0.5rem", width: "5em", height: "5em", objectFit: "contain" }} />
+              <img src={`https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/${player.id}.png`} 
+              alt="" style={{ marginRight: "0.5rem", width: "5em", height: "5em", objectFit: "contain" }} />
               <Typography
                 component="a"
                 href="player"
-                onClick={(e) => { e.preventDefault(); getPlayer(`${player['firstName']} ${player['lastName']}`) }}
+                onClick={(e) => { e.preventDefault(); getPlayer(player.title) }}
                 variant="highlight"
                 sx={{ marginRight: "0.5rem" }}
               >
-                {`${player['firstName']} ${player['lastName']}`}
+                {player.title}
+              </Typography>
+            </StyledTableCell> :
+            <StyledTableCell sx={{ display: 'flex', alignItems: 'center' }}>
+              <img src={blank} 
+              alt="" style={{ marginRight: "0.5rem", width: "5em", height: "5em", objectFit: "contain" }} />
+              <Typography
+                href="player"
+                variant="highlight"
+                sx={{ marginRight: "0.5rem" }}
+              >
+                {player.title}
               </Typography>
             </StyledTableCell>
-            {totalsMap['min'][playerId] === -1 ? 
+            }
+            {!totalsMap['min'][playerId] || totalsMap['min'][playerId] === -1 ? 
             <>
                 <StyledTableCell colSpan={9} align="center">DNP</StyledTableCell>
             </>
@@ -232,7 +251,7 @@ function BoxScoreTable(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-        {createTableRows(totalsData, team, order, orderBy)}
+        {createTableRows(totalsData, order, orderBy)}
         </TableBody>
 
         </Table>

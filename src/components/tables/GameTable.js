@@ -23,7 +23,7 @@ function stableSort(array, comparator, orderBy) {
 }
   
 function isDnp(d) {
-    return d.min === "00" || d.min === "" || d.min === "0" || d.min === "0:00";
+    return !d.min || d.min === "00" || d.min === "" || d.min === "0" || d.min === "0:00";
 }
 
 function getComparator(order, orderBy) {
@@ -31,10 +31,14 @@ function getComparator(order, orderBy) {
       ? (a, b) => 
           orderBy === "date"
             ? new Date(formatDate(b.game.date)).getTime() - new Date(formatDate(a.game.date)).getTime()
+          : orderBy === "min"
+            ? b.min.split(":")[0] - a.min.split(":")[0]
             : b[orderBy] - a[orderBy]
       : (a, b) =>
           orderBy === "date"
             ? new Date(formatDate(a.game.date)).getTime() - new Date(formatDate(b.game.date)).getTime()
+          : orderBy === "min"
+            ? a.min.split(":")[0] - b.min.split(":")[0]
             : a[orderBy] - b[orderBy];
 }
 
@@ -67,14 +71,14 @@ class GameTable extends Component {
   }
 
   async componentDidMount() {
-    const data = await fetchPlayerGameData(this.props.option);
+    const data = await fetchPlayerGameData(this.props.option, this.props.yearRange);
     this.setState({ gameData: data });
   }
 
   async componentDidUpdate(prevProps) {
-    if (this.props.option !== prevProps.option) {
-      const data = await fetchPlayerGameData(this.props.option);
-      this.setState({ gameData: data});
+    if (this.props.option !== prevProps.option || this.props.yearRange !== prevProps.yearRange) {
+      const data = await fetchPlayerGameData(this.props.option, this.props.yearRange);
+      this.setState({ gameData: data });
     }
   }
   handleSortRequest(cellId) {
@@ -137,24 +141,8 @@ class GameTable extends Component {
     );
   }
 
-  fetchTeamList(id) {
-    let player_list = [];
-    const team_players = teamPlayers[teams[id].abbrev];
-    console.log("Official team list: ", team_players);
-    players['league']['standard'].forEach(player => {
-      if (team_players.includes(`${player['firstName']} ${player['lastName']}`))
-        player_list.push(player);
-    });
-
-    return player_list;
-  }
-
   async postBoxScore(data) {
-    const home_players = this.fetchTeamList(data.game.home_team_id);
-    const visitor_players = this.fetchTeamList(data.game.visitor_team_id);
     this.props.onGameSelect({
-      home: home_players,
-      visitor: visitor_players,
       game: data.game
     })
   }
@@ -312,7 +300,7 @@ class GameTable extends Component {
                   DNP
                   </StyledTableCell>) : (
                   <>
-                  <StyledTableCell>{d.min}</StyledTableCell>
+                  <StyledTableCell>{d.min.split(":")[0]}</StyledTableCell>
                   <StyledTableCell>{d.pts}</StyledTableCell>
                   <StyledTableCell>{d.ast}</StyledTableCell>
                   <StyledTableCell>{d.reb}</StyledTableCell>

@@ -23,15 +23,11 @@ import { STAT_LIST } from '../assets/constants';
 function GamePage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [homeTeamList, setHomeTeamList] = useState(null);
-  const [visitorTeamList, setVisitorTeamList] = useState(null);
   const [gameId, setGameId] = useState(null);
   const [gameInfo, setGameInfo] = useState(null);
 
   useEffect(() => {
     if (location.state) {
-        setHomeTeamList(location.state.home);
-        setVisitorTeamList(location.state.visitor);
         setGameId(location.state.game.id);
         setGameInfo(location.state.game);
     }
@@ -48,7 +44,7 @@ function GamePage() {
       console.log(option);
     };
 
-    if (location.state === null || homeTeamList === null || visitorTeamList === null || gameId === null) {
+    if (location.state === null || gameId === null) {
         return <div>Loading...</div>;
     }
     const homeTeam = teams[gameInfo.home_team_id];
@@ -64,7 +60,7 @@ function GamePage() {
             fontFamily: 'Quicksand',
         }
     });
-  
+    
   return (
     <div className="App">
       <Helmet>
@@ -85,11 +81,10 @@ function GamePage() {
       <br></br>
       <StatTabs options={STAT_LIST} onChange={handleStatChange} />
       <br></br>
-    <GameHeader homeLogo={homeTeam.logo} visitorLogo={visitorTeam.logo}homeScore={gameInfo.home_team_score} visitorScore={gameInfo.visitor_team_score} gameStatus={gameInfo.status}></GameHeader>
-    <GameCharts homeTeamList={homeTeamList} visitorTeamList={visitorTeamList} gameId={gameId} 
-      selectedStat={selectedStat} homeColor={gameInfo.home_team_id} visitorColor={gameInfo.visitor_team_id}></GameCharts>
+    <GameHeader homeLogo={homeTeam.logo} visitorLogo={visitorTeam.logo} homeScore={gameInfo.home_team_score} visitorScore={gameInfo.visitor_team_score} gameStatus={gameInfo.status} date={gameInfo.date}></GameHeader>
+    <GameCharts gameId={gameId} selectedStat={selectedStat} homeColor={gameInfo.home_team_id} visitorColor={gameInfo.visitor_team_id}></GameCharts>
     <br></br>
-      <GameTables home={homeTeamList} visitor={visitorTeamList} id={gameId} handleSelect={handleSelect} />
+      <GameTables id={gameId} handleSelect={handleSelect} />
       <Footer></Footer>
       </ThemeProvider>
     </div>

@@ -6,8 +6,6 @@ import { Link } from 'react-router-dom';
 import teams from '../assets/teams.json'
 
 function GameCard(props) {
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const { game } = props;
   const { home_team_score, visitor_team_score, home_team_id, visitor_team_id, status, id } = game.game;
   const homeTeam = game.game.home_team.full_name;
@@ -21,7 +19,7 @@ function GameCard(props) {
         }} 
         state={{ home: game.home, visitor: game.visitor, game: game.game }} 
         variant="outlined" 
-        sx={{ display: 'flex', flexDirection: 'row', backgroundColor: 'rgba(255, 255, 255, 0.2)', backdropFilter: 'blur(5px)', borderRadius: 8, flexBasis: isSmallScreen ? '100%' : '25%', ...props.sx}}>
+        sx={{ display: 'flex', flexDirection: 'row', backgroundColor: 'rgba(255, 255, 255, 0.2)', backdropFilter: 'blur(5px)', borderRadius: 8, ...props.sx}}>
       <CardMedia
         component="img"
         sx={{ width: 100, height: '70%', objectFit: 'contain', alignSelf: 'center' }}
@@ -76,7 +74,6 @@ function GameCards() {
     return <div>Loading recent games... </div>;
   }
 
-  console.log(trendingGames)
   return (
     <>
     <Typography component="h4" variant="h4" sx={{ paddingTop: '100px' }}>
@@ -84,7 +81,7 @@ function GameCards() {
    </Typography>
     <div style={{ maxHeight: '100%', display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center'}}>
       {trendingGames.map((game, index) => (
-        <GameCard key={index} game={game} sx={{ maxHeight: isSmallScreen ? 110 : 300 }}/>
+        <GameCard key={index} game={game} sx={{ maxHeight: isSmallScreen ? 110 : 300, flexBasis: isSmallScreen ? '100%' : trendingGames.length < 3 ? '48%' : '25%'}}/>
       ))}
     </div>
     </>

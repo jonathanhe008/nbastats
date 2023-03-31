@@ -7,16 +7,16 @@ import annotationPlugin from 'chartjs-plugin-annotation';
 import 'chartjs-adapter-date-fns';
 
 ChartJS.register(...registerables, annotationPlugin);
-const LineChart = ({ option, stat }) => {
+const LineChart = ({ option, stat, yearRange }) => {
   const [chartData, setChartData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetchLineData(option, stat);
+      const data = await fetchLineData(option, stat, yearRange);
       setChartData(data);
     };
     fetchData();
-  }, [option, stat]);
+  }, [option, stat, yearRange]);
 
   if (!chartData) {
     return <div>Loading...</div>;

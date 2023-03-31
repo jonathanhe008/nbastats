@@ -8,7 +8,6 @@ function ChartCarousel(props) {
     const [activeChart, setActiveChart] = useState(1);
   
     const handleChange = (_, value) => {
-        console.log(value)
         setActiveChart(value);
     };
       
@@ -20,19 +19,19 @@ function ChartCarousel(props) {
           } }} display="flex" flexDirection="column" alignItems="center">
             { props.selectedStat === "Points" ? <>
             <div className="playerChartBox">
-                {activeChart === 1 ? <LineChart option={props.selectedOption} stat={props.selectedStat} /> :
-                activeChart === 2 ? <BarChart option={props.selectedOption} stat={props.selectedStat} /> :
-                activeChart === 3 ? <BubbleChart option={props.selectedOption} stat='FG' /> :
-                activeChart === 4 ? <BubbleChart option={props.selectedOption} stat='3PT' /> :
-                <BubbleChart option={props.selectedOption} stat='FT' />}
+                {activeChart === 1 ? <LineChart option={props.selectedOption} stat={props.selectedStat} yearRange={props.yearRange}/> :
+                activeChart === 2 ? <BarChart option={props.selectedOption} stat={props.selectedStat} yearRange={props.yearRange}/> :
+                activeChart === 3 ? <BubbleChart option={props.selectedOption} stat='FG' yearRange={props.yearRange}/> :
+                activeChart === 4 ? <BubbleChart option={props.selectedOption} stat='3PT' yearRange={props.yearRange}/> :
+                <BubbleChart option={props.selectedOption} stat='FT' yearRange={props.yearRange}/>}
             </div>
             <Stack alignItems="center">
             <Pagination count={5} page={activeChart} onChange={handleChange} />
             </Stack>
             </> : <>
             <div className="playerChartBox">
-                {activeChart === 1 ? <LineChart option={props.selectedOption} stat={props.selectedStat}></LineChart> :
-                 <BarChart option={props.selectedOption} stat={props.selectedStat}></BarChart>}
+                {activeChart === 1 ? <LineChart option={props.selectedOption} stat={props.selectedStat} yearRange={props.yearRange}></LineChart> :
+                 <BarChart option={props.selectedOption} stat={props.selectedStat} yearRange={props.yearRange}></BarChart>}
             </div>
             <Stack alignItems="center">
             <Pagination count={2} page={activeChart} onChange={handleChange} />

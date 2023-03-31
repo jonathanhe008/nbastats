@@ -25,7 +25,6 @@ class SeasonAverageTable extends Component {
   }
 
   async componentDidMount() {
-    console.log(this.props.option)
     const data = await fetchAverageData(this.props.option.apiId);
     this.setState({ averageData: data });
   }

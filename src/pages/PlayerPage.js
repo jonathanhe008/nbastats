@@ -20,12 +20,13 @@ import Header from '../components/Header'
 import { STAT_LIST } from '../assets/constants';
 import { useLocation, useNavigate } from 'react-router-dom';
 import SeasonAverageTable from '../components/tables/SeasonAverageTable';
+import YearSlider from '../components/YearSlider';
 
 function PlayerPage() {
     const location = useLocation();
     const navigate = useNavigate();
     const [selectedOption, setSelectedOption] = useState(null);
-  
+    const defaultYearRange = [2022, 2022];
     useEffect(() => {
       if (location.state) {
         setSelectedOption(location.state.selectedOption);
@@ -35,13 +36,14 @@ function PlayerPage() {
     const handleSelect = (value) => {
       setSelectedOption(value);
       console.log(value);
+      setYearRange(defaultYearRange);
       navigate(`/${value.category.toLowerCase()}?name=${value.title}`, { state: { selectedOption: value } });
     };
 
     const handleGameSelect = (value) => {
         setSelectedOption(value);
         console.log(value);
-        navigate(`/game?id=${value.game.id}`, { state: { home: value.home, visitor: value.visitor, game: value.game } });
+        navigate(`/game?id=${value.game.id}`, { state: { game: value.game } });
     };
   
     
@@ -51,7 +53,14 @@ function PlayerPage() {
       setSelectedStat(option);
       console.log(option);
     };
-  
+
+    const [yearRange, setYearRange] = useState(defaultYearRange);
+
+    const handleYearRangeChange = (newValue) => {
+      setYearRange(newValue);
+    };
+
+
     if (location.state === null || selectedOption === null) {
       return <div>Loading...</div>;
     }
@@ -90,11 +99,15 @@ function PlayerPage() {
             <Headshot option={selectedOption}></Headshot>
         </Container>
         </Stack>
-        <ChartCarousel selectedOption={selectedOption} selectedStat={selectedStat}></ChartCarousel>
+        <ChartCarousel selectedOption={selectedOption} selectedStat={selectedStat} yearRange={yearRange}></ChartCarousel>
         <br></br>
         <SeasonAverageTable option={selectedOption} onSelect={handleSelect} ></SeasonAverageTable>
+        <YearSlider defaultYearRange={defaultYearRange}
+          value={yearRange}
+          onChange={handleYearRangeChange} 
+          color={`rgba(${teams[selectedOption.info.team.id].primary_color}, 1)`}></YearSlider>
         <br></br>
-        <GameTable option={selectedOption} onSelect={handleSelect} onGameSelect={handleGameSelect}></GameTable>
+        <GameTable option={selectedOption} yearRange={yearRange} onSelect={handleSelect} onGameSelect={handleGameSelect}></GameTable>
         <Footer></Footer>
         </ThemeProvider>
         </div>

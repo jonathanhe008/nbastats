@@ -5,16 +5,16 @@ import { Chart as ChartJS, registerables } from 'chart.js';
 import teams from '../../assets/teams.json';
 
 ChartJS.register(...registerables);
-const PieChart = ({ team, id, stat, teamColor }) => {
+const PieChart = ({ isHome, id, stat, teamColor }) => {
   const [chartData, setChartData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetchPieData(team, id, stat);
+      const data = await fetchPieData(isHome, id, stat);
       setChartData(data);
     };
     fetchData();
-  }, [team, id, stat]);
+  }, [isHome, id, stat]);
 
   if (!chartData) {
     return <div>Loading...</div>;
