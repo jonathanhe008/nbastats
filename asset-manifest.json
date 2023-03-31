@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/nbastats/static/css/main.01d22009.css",
-    "main.js": "/nbastats/static/js/main.4b5ca25b.js",
+    "main.js": "/nbastats/static/js/main.c4688327.js",
     "static/js/787.c3dcaf5a.chunk.js": "/nbastats/static/js/787.c3dcaf5a.chunk.js",
     "static/media/goats.png": "/nbastats/static/media/goats.330fe6c32af30d1172a9.png",
     "static/media/dog_crown.png": "/nbastats/static/media/dog_crown.c217eb9984aa9c73a8c3.png",
@@ -31,6 +31,7 @@
     "static/media/goat_MEM.png": "/nbastats/static/media/goat_MEM.e7cdee6afcabc539b2b8.png",
     "static/media/goat_TOR.png": "/nbastats/static/media/goat_TOR.508c8e7752223ecfb6b6.png",
     "static/media/goat_BRK.png": "/nbastats/static/media/goat_BRK.8e9bda48bd9a904e94a4.png",
+    "static/media/blank.png": "/nbastats/static/media/blank.c5cba9388e3942dc3972.png",
     "static/media/goat_CHI.png": "/nbastats/static/media/goat_CHI.5d78dec499346e7719b2.png",
     "static/media/goat_LAC.png": "/nbastats/static/media/goat_LAC.ba3e88af2fad6ab49d58.png",
     "static/media/goat_POR.png": "/nbastats/static/media/goat_POR.4a66d6d556adff9843a3.png",
@@ -55,11 +56,11 @@
     "static/media/quicksand-vietnamese-700-normal.woff2": "/nbastats/static/media/quicksand-vietnamese-700-normal.f16da1766f969ce75e43.woff2",
     "index.html": "/nbastats/index.html",
     "main.01d22009.css.map": "/nbastats/static/css/main.01d22009.css.map",
-    "main.4b5ca25b.js.map": "/nbastats/static/js/main.4b5ca25b.js.map",
+    "main.c4688327.js.map": "/nbastats/static/js/main.c4688327.js.map",
     "787.c3dcaf5a.chunk.js.map": "/nbastats/static/js/787.c3dcaf5a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.01d22009.css",
-    "static/js/main.4b5ca25b.js"
+    "static/js/main.c4688327.js"
   ]
 }
