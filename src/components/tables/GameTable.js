@@ -73,12 +73,14 @@ class GameTable extends Component {
   async componentDidMount() {
     const data = await fetchPlayerGameData(this.props.option, this.props.yearRange);
     this.setState({ gameData: data });
+    this.props.setIsLoading(false);
   }
 
   async componentDidUpdate(prevProps) {
     if (this.props.option !== prevProps.option || this.props.yearRange !== prevProps.yearRange) {
       const data = await fetchPlayerGameData(this.props.option, this.props.yearRange);
       this.setState({ gameData: data });
+      this.props.setIsLoading(false);
     }
   }
   handleSortRequest(cellId) {

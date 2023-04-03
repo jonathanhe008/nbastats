@@ -55,9 +55,11 @@ function PlayerPage() {
     };
 
     const [yearRange, setYearRange] = useState(defaultYearRange);
-
+    const [isLoading, setIsLoading] = useState(true);
+  
     const handleYearRangeChange = (newValue) => {
       setYearRange(newValue);
+      setIsLoading(true);
     };
 
 
@@ -103,11 +105,11 @@ function PlayerPage() {
         <br></br>
         <SeasonAverageTable option={selectedOption} onSelect={handleSelect} ></SeasonAverageTable>
         <YearSlider
-          value={yearRange}
+          isLoading={isLoading}
           onChange={handleYearRangeChange} 
           color={`rgba(${teams[selectedOption.info.team.id].primary_color}, 1)`}></YearSlider>
         <br></br>
-        <GameTable option={selectedOption} yearRange={yearRange} onSelect={handleSelect} onGameSelect={handleGameSelect}></GameTable>
+        <GameTable option={selectedOption} setIsLoading={setIsLoading} yearRange={yearRange} onSelect={handleSelect} onGameSelect={handleGameSelect}></GameTable>
         <Footer></Footer>
         </ThemeProvider>
         </div>

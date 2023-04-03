@@ -1,21 +1,10 @@
-import { useState, useEffect } from 'react';
 import { Slider, Stack } from '@mui/material';
 import debounce from 'lodash/debounce';
 
-function YearSlider({ value, onChange, color }) {
-    const [isDisabled, setIsDisabled] = useState(false);
-  
+function YearSlider({ isLoading, onChange, color }) {
     const handleYearRangeChange = debounce((event, newValue) => {
-      setIsDisabled(true);
       onChange(newValue);
     }, 10);
-  
-    useEffect(() => {
-      const timer = setTimeout(() => {
-        setIsDisabled(false);
-      }, 1000);
-      return () => clearTimeout(timer);
-    }, [value]);
 
     return (
       <Stack direction="row"
@@ -25,7 +14,7 @@ function YearSlider({ value, onChange, color }) {
         sx={{ marginTop: '2rem' }}
       >
         <Slider
-          value={value}
+          defaultValue={[2022, 2022]}
           size="small"
           onChangeCommitted={handleYearRangeChange}
           min={2015}
@@ -33,7 +22,7 @@ function YearSlider({ value, onChange, color }) {
           marks
           valueLabelDisplay="on"
           sx={{ width: 250, color: color }}
-          disabled={isDisabled}
+          disabled={isLoading}
         />
       </Stack>
     );
