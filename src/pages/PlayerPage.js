@@ -102,7 +102,7 @@ function PlayerPage() {
         <ChartCarousel selectedOption={selectedOption} selectedStat={selectedStat} yearRange={yearRange}></ChartCarousel>
         <br></br>
         <SeasonAverageTable option={selectedOption} onSelect={handleSelect} ></SeasonAverageTable>
-        <YearSlider defaultYearRange={defaultYearRange}
+        <YearSlider
           value={yearRange}
           onChange={handleYearRangeChange} 
           color={`rgba(${teams[selectedOption.info.team.id].primary_color}, 1)`}></YearSlider>
