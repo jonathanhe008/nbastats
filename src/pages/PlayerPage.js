@@ -105,6 +105,7 @@ function PlayerPage() {
         <br></br>
         <SeasonAverageTable option={selectedOption} onSelect={handleSelect} ></SeasonAverageTable>
         <YearSlider
+          key={selectedOption.title}
           isLoading={isLoading}
           onChange={handleYearRangeChange} 
           color={`rgba(${teams[selectedOption.info.team.id].primary_color}, 1)`}></YearSlider>
