@@ -17,7 +17,7 @@ function YearSlider({ isLoading, onChange, color }) {
           defaultValue={[2022, 2022]}
           size="small"
           onChangeCommitted={handleYearRangeChange}
-          min={2015}
+          min={2003}
           max={2022}
           marks
           valueLabelDisplay="on"

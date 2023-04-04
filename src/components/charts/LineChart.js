@@ -42,7 +42,7 @@ const LineChart = ({ option, stat, yearRange }) => {
                     display: true,
                     text: chartData.title
                 },
-                annotation: {
+                annotation: chartData.data.length ? {
                   annotations: {
                     line1: {
                       type: 'line',
@@ -53,7 +53,7 @@ const LineChart = ({ option, stat, yearRange }) => {
                       borderDash: [5, 5],
                     }
                   }
-                }
+                } : null
             },
             ticks: {
               precision:0
