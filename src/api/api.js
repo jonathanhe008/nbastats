@@ -206,7 +206,6 @@ export async function fetchBoxScore(isHome, game) {
   let data = await response.json();
   const filteredData = data.data.filter((stats) => isHome ? stats.game.home_team_id === stats.team.id : stats.game.visitor_team_id === stats.team.id);
   filteredData.sort((a, b) => b.pts - a.pts)
-
   var score_map = {
     "pts": {},
     "ast": {},
@@ -219,13 +218,14 @@ export async function fetchBoxScore(isHome, game) {
     "fg": {},
     "ft": {}
   };
-  function hasNonZeroStats(player_stats) {
-    var stats = ["pts", "ast", "reb", "blk", "stl", "turnover"];
-    return stats.some(stat => parseInt(player_stats[stat], 10) !== 0);
-  }
+
   for (let player_stats of filteredData) {
+    if (!player_stats.player) {
+      continue;
+    }
     var stats = ["pts", "ast", "reb", "blk", "stl", "turnover", "min", "fg3", "fg", "ft"];
-    if (player_stats["min"] !== null && hasNonZeroStats(player_stats)) {
+
+    if (!(!player_stats["min"] || player_stats["min"] === "00" || player_stats["min"] === "" || player_stats["min"] === "0" || player_stats["min"] === "0:00")) {
       stats.forEach(function(stat) {
         let value = -1;
         if (stat === "min") {
@@ -380,6 +380,7 @@ export const fetchAverageData = memoize(async function(player) {
     const season_stats = await fetchSeasonAverageMemoized(player);
     return season_stats;
   } catch (error) {
+    console.log(error)
     return {
       error: 'An error occurred while fetching the data.',
     };
@@ -391,6 +392,7 @@ export const fetchTotalsData = memoize(async function(players) {
       const totals_map = await fetchSeasonAveragesMemoized(players);
       return totals_map;
     } catch (error) {
+      console.log(error)
       return {
         error: 'An error occurred while fetching the data.',
       };
@@ -402,6 +404,7 @@ export const fetchGameData = memoize(async function(isHome, id) {
     const box_map = await fetchBoxScoreMemoized(isHome, id);
     return box_map;
   } catch (error) {
+    console.log(error)
     return {
       error: 'An error occurred while fetching the data.',
     };
@@ -417,6 +420,7 @@ export const fetchPlayerGameData = memoize(async function(selection, yearRange) 
       console.log("Game data => ", games)
       return games;
     } catch (error) {
+      console.log(error)
       return {
         error: 'An error occurred while fetching the data.',
       };
@@ -436,6 +440,7 @@ export const fetchPieData = memoize(async function(isHome, id, stat) {
       stat: stat
     };
   } catch (error) {
+    console.log(error)
     return {
       error: 'An error occurred while fetching the data.',
     };
@@ -455,6 +460,7 @@ export const fetchDoughnutData = memoize(async function(selection, stat) {
         stat: stat
       };
     } catch (error) {
+      console.log(error)
       return {
         error: 'An error occurred while fetching the data.',
       };
@@ -474,6 +480,7 @@ export const fetchBarData = memoize(async function(selection, stat, yearRange) {
         stat: stat
       };
     } catch (error) {
+      console.log(error)
       return {
         error: 'An error occurred while fetching the data.',
       };
@@ -490,6 +497,7 @@ export const fetchBubbleData = memoize(async function(selection, stat, yearRange
       title: `${player['first_name']} ${player['last_name']} ${stat} Efficiency this Season`,
     };
   } catch (error) {
+    console.log(error)
     return {
       error: 'An error occurred while fetching the data.',
     };
@@ -509,6 +517,7 @@ export const fetchLineData = memoize(async function(selection, stat, yearRange) 
         stat: stat
       };
     } catch (error) {
+      console.log(error)
       return {
         error: 'An error occurred while fetching the data.',
       };
