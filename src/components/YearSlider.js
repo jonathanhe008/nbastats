@@ -1,4 +1,4 @@
-import { Slider, Stack } from '@mui/material';
+import { Slider } from '@mui/material';
 import debounce from 'lodash/debounce';
 
 function YearSlider({ isLoading, onChange, color }) {
@@ -7,12 +7,6 @@ function YearSlider({ isLoading, onChange, color }) {
     }, 10);
 
     return (
-      <Stack direction="row"
-        justifyContent="center"
-        alignItems="center"
-        spacing={2}
-        sx={{ marginTop: '2rem' }}
-      >
         <Slider
           defaultValue={[2022, 2022]}
           size="small"
@@ -24,7 +18,6 @@ function YearSlider({ isLoading, onChange, color }) {
           sx={{ width: 250, color: color }}
           disabled={isLoading}
         />
-      </Stack>
     );
   }
 

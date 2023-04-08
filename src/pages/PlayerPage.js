@@ -21,6 +21,7 @@ import { STAT_LIST } from '../assets/constants';
 import { useLocation, useNavigate } from 'react-router-dom';
 import SeasonAverageTable from '../components/tables/SeasonAverageTable';
 import YearSlider from '../components/YearSlider';
+import TeamSelector from '../components/TeamSelector';
 
 function PlayerPage() {
     const location = useLocation();
@@ -37,6 +38,7 @@ function PlayerPage() {
       setSelectedOption(value);
       console.log(value);
       setYearRange(defaultYearRange);
+      setSelectedTeam("");
       navigate(`/${value.category.toLowerCase()}?name=${value.title}`, { state: { selectedOption: value } });
     };
 
@@ -62,6 +64,12 @@ function PlayerPage() {
       setIsLoading(true);
     };
 
+    const [selectedTeam, setSelectedTeam] = useState("");
+
+    const handleTeamSelected = (team) => {
+      setSelectedTeam(team);
+      setIsLoading(true);
+    };
 
     if (location.state === null || selectedOption === null) {
       return <div>Loading...</div>;
@@ -104,13 +112,33 @@ function PlayerPage() {
         <ChartCarousel selectedOption={selectedOption} selectedStat={selectedStat} yearRange={yearRange}></ChartCarousel>
         <br></br>
         <SeasonAverageTable option={selectedOption} onSelect={handleSelect} ></SeasonAverageTable>
-        <YearSlider
-          key={selectedOption.title}
-          isLoading={isLoading}
-          onChange={handleYearRangeChange} 
-          color={`rgba(${teams[selectedOption.info.team.id].primary_color}, 1)`}></YearSlider>
         <br></br>
-        <GameTable option={selectedOption} setIsLoading={setIsLoading} yearRange={yearRange} onSelect={handleSelect} onGameSelect={handleGameSelect}></GameTable>
+        <Stack
+            direction="row"
+            spacing={5}
+            alignItems="center"
+            justifyContent="flex-end"
+            maxWidth="90%"
+            sx={{
+              '@media screen and (max-width: 767px)': {
+                flexDirection: 'column'
+              }
+            }}
+          >
+          <YearSlider
+            key={selectedOption.title}
+            isLoading={isLoading}
+            onChange={handleYearRangeChange}
+            color={`rgba(${teams[selectedOption.info.team.id].primary_color}, 1)`}
+          />
+          <TeamSelector
+            selectedTeam={selectedTeam}
+            onTeamSelected={handleTeamSelected}
+            isLoading={isLoading}
+          />
+        </Stack>
+        <br></br>
+        <GameTable option={selectedOption} setIsLoading={setIsLoading} yearRange={yearRange} onSelect={handleSelect} onGameSelect={handleGameSelect} selectedTeam={selectedTeam}></GameTable>
         <Footer></Footer>
         </ThemeProvider>
         </div>

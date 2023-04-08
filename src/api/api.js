@@ -412,13 +412,20 @@ export const fetchGameData = memoize(async function(isHome, id) {
 });
 
 
-export const fetchPlayerGameData = memoize(async function(selection, yearRange) {
+export const fetchPlayerGameData = memoize(async function(selection, yearRange, selectedTeam) {
     try {
       const player = selection.info;
       const maps = await fetchPlayerStatsMemoized(player, yearRange);
       const games = maps.data;
-      console.log("Game data => ", games)
-      return games;
+      const teamId = parseInt(selectedTeam, 10);
+      if (teamId) {
+        const dataQueried = games.filter((stats) =>  stats.game.home_team_id === teamId || stats.game.visitor_team_id === teamId);
+        console.log("Game data => ", dataQueried)
+        return dataQueried;
+      } else {
+        console.log("Game data => ", games)
+        return games;
+      }
     } catch (error) {
       console.log(error)
       return {
