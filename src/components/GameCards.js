@@ -81,7 +81,7 @@ function GameCards() {
    </Typography>
     <div style={{ maxHeight: '100%', display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'center'}}>
       {trendingGames.map((game, index) => (
-        <GameCard key={index} game={game} sx={{ maxHeight: isSmallScreen ? 110 : 300, flexBasis: isSmallScreen ? '100%' : trendingGames.length < 3 ? '48%' : '25%'}}/>
+        <GameCard key={index} game={game} sx={{ maxHeight: isSmallScreen ? 300 : 100, width: '350px', flex: '0 0 auto' }}/>
       ))}
     </div>
     </>
