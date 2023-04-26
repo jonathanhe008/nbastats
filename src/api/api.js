@@ -127,10 +127,13 @@ export async function fetchSeasonAverages(players) {
     const playerIds = players.map(player => player['apiId']);
     var url = new URL("https://www.balldontlie.io/api/v1/season_averages");
     var params = {
-        'season': '2022', 
-        'player_ids[]': playerIds,
+        'season': '2022'
     };
     url.search = new URLSearchParams(params).toString();
+
+    playerIds.forEach(id => {
+      url.searchParams.append('player_ids[]', id);
+    });
     let response = await fetch(url, { method: "GET" });
     let data = await response.json();
 
@@ -356,14 +359,7 @@ export async function fetchTrendingGames(date) {
 
   let game_list = [];
   for (let game of data.data) {
-    const home_players = fetchTeamList(game.home_team.id);
-    const visitor_players = fetchTeamList(game.visitor_team.id);
-    game_list.push({
-      home: home_players,
-      visitor: visitor_players,
-      game: {...game, home_team_id: game.home_team.id, visitor_team_id: game.visitor_team.id}
-    });
-
+    game_list.push({...game, home_team_id: game.home_team.id, visitor_team_id: game.visitor_team.id});
   }
 
   console.log("Trending Games =>", game_list);

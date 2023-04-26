@@ -7,9 +7,9 @@ import teams from '../assets/teams.json'
 
 function GameCard(props) {
   const { game } = props;
-  const { home_team_score, visitor_team_score, home_team_id, visitor_team_id, status, id } = game.game;
-  const homeTeam = game.game.home_team.full_name;
-  const visitorTeam = game.game.visitor_team.full_name;
+  const { home_team_score, visitor_team_score, home_team_id, visitor_team_id, status, id } = game;
+  const homeTeam = game.home_team.full_name;
+  const visitorTeam = game.visitor_team.full_name;
   
   return (
     <Card component={Link} 
@@ -17,7 +17,7 @@ function GameCard(props) {
         pathname: '/game',
         search: `?id=${encodeURIComponent(id)}`
         }} 
-        state={{ home: game.home, visitor: game.visitor, game: game.game }} 
+        state={{ game: game }} 
         variant="outlined" 
         sx={{ display: 'flex', flexDirection: 'row', backgroundColor: 'rgba(255, 255, 255, 0.2)', backdropFilter: 'blur(5px)', borderRadius: 8, ...props.sx}}>
       <CardMedia

@@ -23,12 +23,10 @@ import { STAT_LIST } from '../assets/constants';
 function GamePage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [gameId, setGameId] = useState(null);
   const [gameInfo, setGameInfo] = useState(null);
 
   useEffect(() => {
     if (location.state) {
-        setGameId(location.state.game.id);
         setGameInfo(location.state.game);
     }
   }, [location.state]);
@@ -44,7 +42,7 @@ function GamePage() {
       console.log(option);
     };
 
-    if (location.state === null || gameId === null) {
+    if (location.state === null || gameInfo === null) {
         return <div>Loading...</div>;
     }
     const homeTeam = teams[gameInfo.home_team_id];
@@ -60,7 +58,7 @@ function GamePage() {
             fontFamily: 'Quicksand',
         }
     });
-    
+
   return (
     <div className="App">
       <Helmet>
@@ -82,9 +80,9 @@ function GamePage() {
       <StatTabs options={STAT_LIST} onChange={handleStatChange} />
       <br></br>
     <GameHeader homeLogo={homeTeam.logo} visitorLogo={visitorTeam.logo} homeScore={gameInfo.home_team_score} visitorScore={gameInfo.visitor_team_score} gameStatus={gameInfo.status} date={gameInfo.date}></GameHeader>
-    <GameCharts gameId={gameId} selectedStat={selectedStat} homeColor={gameInfo.home_team_id} visitorColor={gameInfo.visitor_team_id}></GameCharts>
+    <GameCharts gameId={gameInfo.id} selectedStat={selectedStat} homeColor={gameInfo.home_team_id} visitorColor={gameInfo.visitor_team_id}></GameCharts>
     <br></br>
-      <GameTables id={gameId} handleSelect={handleSelect} />
+      <GameTables id={gameInfo.id} handleSelect={handleSelect} />
       <Footer></Footer>
       </ThemeProvider>
     </div>
