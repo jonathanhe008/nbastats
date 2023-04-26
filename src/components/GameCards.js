@@ -22,7 +22,7 @@ function GameCard(props) {
         sx={{ display: 'flex', flexDirection: 'row', backgroundColor: 'rgba(255, 255, 255, 0.2)', backdropFilter: 'blur(5px)', borderRadius: 8, ...props.sx}}>
       <CardMedia
         component="img"
-        sx={{ width: 100, height: '70%', objectFit: 'contain', alignSelf: 'center' }}
+        sx={{ width: 75, height: '70%', objectFit: 'contain', alignSelf: 'center' }}
         image={teams[home_team_id].logo}
         alt={`${homeTeam} logo`}
       />
