@@ -44,7 +44,7 @@ function HomePage() {
             <Header team='LAL' sx={{ marginBottom: '2rem' }} />
             <Box display="flex" alignItems="center" textAlign="center">
                 <Typography variant="h6" fontFamily='Quicksand'>
-                    Is your favorite player the GOAT?
+                    Functional during 2023-24 NBA Season - Currently in Cancun
                 </Typography>
             </Box>
             <img
